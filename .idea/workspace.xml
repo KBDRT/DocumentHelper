@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="001a64e5-f1f8-4bb0-977b-f560646f6244" name="Список изменений" comment="">
+      <change beforePath="$PROJECT_DIR$/DocumentHelper.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/DocumentHelper.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MainWindow.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/MainWindow.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MainWindow.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MainWindow.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model/Reference/Unit.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Model/Reference/Unit.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ModelView/DocumentSectionViewModel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ModelView/DocumentViewModel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ModelView/PositionViewModel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Styles/Style.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/Styles/Style.xaml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="2" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 0
+}]]></component>
+  <component name="ProjectId" id="3342gJ3SITVzC5FtC86ywpkbvro" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/GithubRepositories/DocumentHelper"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="уровень приложения" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Задача по умолчанию">
+      <changelist id="001a64e5-f1f8-4bb0-977b-f560646f6244" name="Список изменений" comment="" />
+      <created>1758562133334</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1758562133334</updated>
+    </task>
+    <servers />
+  </component>
+</project>

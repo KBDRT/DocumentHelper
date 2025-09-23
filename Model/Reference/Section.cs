@@ -3,10 +3,10 @@
     public partial class Section : Identifier
     {
 
-        public string Name = string.Empty;
+        public string Name { get; set; } = string.Empty;
 
-        public int Number;
+        public int Number { get; set; }
 
-        public string TotalDescription = string.Empty;
+        public string TotalDescription { get; set; } = string.Empty;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using DocumentHelper.Model.Document;
+using DocumentHelper.Services;
 using PropertyChanged.SourceGenerator;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -90,13 +91,11 @@ namespace DocumentHelper.ModelView
         {
             _document = new() { DatePeriod = new() { DateStart = DateTime.Now, DateEnd = DateTime.Now} };
 
-            Sections.Add(new(RecalsCosts) { Section = new() { Name = "Монтажные работы" } });
-            Sections.Add(new(RecalsCosts) { Section = new() { Name = "Материалы" } });
-            Sections.Add(new(RecalsCosts) { Section = new() { Name = "Прочие расходы" } });
-
-            foreach (var section in Sections)
+            foreach (var section in DataManager.Sections)
             {
-                section.InitializeCommands();
+                DocumentSectionViewModel newSection = new(RecalsCosts) { Section = new() { Name = section.Name } };
+                Sections.Add(newSection);
+                newSection.InitializeCommands();
             }
         }
 

@@ -1,15 +1,14 @@
-﻿namespace DocumentHelper.Model.Reference
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace DocumentHelper.Model.Reference
 {
+    [Owned]
     public class Address
     {
-        public string Region = string.Empty;
+        public string City { get; set; } = string.Empty;
 
-        public string City = string.Empty;
+        public string Street { get; set; } = string.Empty;
 
-        public string Street = string.Empty;
-
-        public string House = string.Empty;
-
-        public string Apart = string.Empty;
+        public string House { get; set; } = string.Empty;
     }
 }

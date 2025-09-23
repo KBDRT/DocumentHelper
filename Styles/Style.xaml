@@ -215,6 +215,57 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="ModernDataGrid2" TargetType="DataGrid">
+        <!--<Setter Property="Background" Value="White"/>-->
+        <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <!--<Setter Property="RowBackground" Value="White"/>-->
+        <!-- Убрано AlternatingRowBackground для удаления зебры -->
+        <Setter Property="GridLinesVisibility" Value="None"/>
+        <Setter Property="HeadersVisibility" Value="Column"/>
+        <Setter Property="AutoGenerateColumns" Value="False"/>
+        <Setter Property="CanUserAddRows" Value="False"/>
+        <Setter Property="CanUserDeleteRows" Value="False"/>
+        <Setter Property="CanUserResizeRows" Value="False"/>
+        <Setter Property="SelectionMode" Value="Single"/>
+        <Setter Property="SelectionUnit" Value="FullRow"/>
+        <Setter Property="FontSize" Value="14"/>
+        <!-- Добавлены разделители между столбцами -->
+        <Setter Property="ColumnHeaderHeight" Value="32"/>
+        <Setter Property="HorizontalGridLinesBrush" Value="Transparent"/>
+        <Setter Property="VerticalGridLinesBrush" Value="{StaticResource BorderBrush}"/>
+    </Style>
+
+    <Style x:Key="DataGridColumnHeaderStyle2" TargetType="DataGridColumnHeader">
+        <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Padding" Value="12,6"/>
+        <Setter Property="BorderThickness" Value="0,0,1,0"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Height" Value="32"/>
+    </Style>
+
+
+    <Style x:Key="DataGridCellStyle2" TargetType="DataGridCell">
+        <Setter Property="Padding" Value="12,6"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+                <Setter Property="Foreground" Value="White"/>
+                <!-- Убираем границы для выделенных ячеек -->
+                <Setter Property="BorderBrush" Value="Transparent"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
+
     <Style x:Key="RightAlignedCellStyle" TargetType="TextBlock">
         <Setter Property="HorizontalAlignment" Value="Right"/>
         <Setter Property="Margin" Value="0,0,10,0"/>

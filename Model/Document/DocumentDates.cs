@@ -1,9 +1,12 @@
-﻿namespace DocumentHelper.Model.Document
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace DocumentHelper.Model.Document
 {
+    [Owned]
     public class DocumentDates
     {
-        public DateTime DateStart;
+        public DateTime DateStart { get; set; } = DateTime.MinValue;
 
-        public DateTime DateEnd;
+        public DateTime DateEnd { get; set; } = DateTime.MaxValue;
     }
 }

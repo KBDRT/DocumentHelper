@@ -2,18 +2,18 @@
 {
     public class Position : Identifier
     {
-        public int Number;
+        public int Number { get; set; }
 
-        public Item? Item;
+        public Item? Item { get; set; }
 
-        public double Amount;
+        public double Amount { get; set; }
 
-        public double Price;
+        public double Price { get; set; }
 
         public double TotalSum => Amount * Price;
 
-        public Document? Document;
+        public Document? Document { get; set; }
 
-        public Section? Section;
+        public Section? Section { get; set; }
     }
 }

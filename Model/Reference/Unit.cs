@@ -2,10 +2,12 @@
 {
     public class Unit : Identifier
     {
-        public string FullName = string.Empty;
+        public int Number { get; set; }
 
-        public string ShortName = string.Empty;
+        public string FullName { get; set; } = string.Empty;
 
-        public int Code = 0;
+        public string ShortName { get; set; } = string.Empty;
+
+        public int Code { get; set; } = 0;
     }
 }

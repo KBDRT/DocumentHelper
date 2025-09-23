@@ -1,14 +1,14 @@
-﻿namespace DocumentHelper.Model.Reference
+﻿using DocumentHelper.Model.Document;
+
+namespace DocumentHelper.Model.Reference
 {
     public class Customer : Identifier
     {
-        public string Name = string.Empty;
+        public string Name { get; set; } = string.Empty;
 
-        public Address? Address;
+        public Address Address { get; set; } = new();
 
-        public DateOnly DateStart;
+        public DocumentDates DatePeriod { get; set; } = new();
 
-        public DateOnly DateEnd;
-        
     }
 }

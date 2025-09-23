@@ -2,10 +2,10 @@
 {
     public class Item : Identifier
     {
-        public string Name = string.Empty;
+        public string Name { get; set; } = string.Empty;
 
-        public Unit? Unit;
+        public Unit? Unit { get; set; }
 
-        public Section? Section;
+        public Section? Section { get; set; }
     }
 }
