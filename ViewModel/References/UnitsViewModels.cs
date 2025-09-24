@@ -5,6 +5,11 @@ namespace DocumentHelper.ModelView.References
 {
     public partial class UnitsViewModel : ReferencesViewModel<Unit, UnitViewModel>
     {
+        public UnitsViewModel() : base()
+        {
+            ReferenceName = "Unit";
+        }
+
         protected override Unit? CreateEntityFromViewModel(UnitViewModel entityViewModel)
         {
             if (entityViewModel is UnitViewModel unit)

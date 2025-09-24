@@ -1,15 +1,16 @@
 ﻿using DocumentHelper.Model;
 using DocumentHelper.Model.Reference;
 using DocumentHelper.ModelView.ReferencesVM;
-using DocumentHelper.ViewModel.References.Abstractions;
-using System.IO;
-using System.Windows.Input;
-using System.Xml.Linq;
 
 namespace DocumentHelper.ModelView.References
 {
     public partial class CustomersViewModel : ReferencesViewModel<Customer, CustomerViewModel>
     {
+        public CustomersViewModel() : base()
+        {
+            ReferenceName = "Customer";
+        }
+
         protected override Customer? CreateEntityFromViewModel(CustomerViewModel entityViewModel)
         {
             if (entityViewModel is CustomerViewModel customer)

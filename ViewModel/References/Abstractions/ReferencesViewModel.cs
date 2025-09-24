@@ -1,9 +1,7 @@
 ﻿using DocumentHelper.Commands;
 using DocumentHelper.Model;
 using DocumentHelper.Services;
-using DocumentHelper.ViewModel.References.Abstractions;
 using PropertyChanged.SourceGenerator;
-using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
@@ -25,6 +23,7 @@ namespace DocumentHelper.ModelView.ReferencesVM
 
         public RelayCommand SaveCommand { get; private set; } = null!;
 
+        protected string ReferenceName { get; set; } = string.Empty;
 
         public ObservableCollection<EntityViewModel> Reference
         {
@@ -73,7 +72,7 @@ namespace DocumentHelper.ModelView.ReferencesVM
                 SelectedItem = null;
             }
             else
-                return;
+                return; 
         }
 
         private void SaveCommandHandler(object parameter)
@@ -84,7 +83,7 @@ namespace DocumentHelper.ModelView.ReferencesVM
                 return;
             }
 
-            _service.SaveReference(entityList);
+            _service.SaveReference(entityList, ReferenceName);
             Reference.Clear();
 
             foreach (var item in entityList)

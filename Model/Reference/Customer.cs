@@ -10,5 +10,8 @@ namespace DocumentHelper.Model.Reference
 
         public DocumentDates DatePeriod { get; set; } = new();
 
+
+        public string FullInfo => $"{Name}, {Address.City}, {Address.Street}, {Address.City}";
+
     }
 }

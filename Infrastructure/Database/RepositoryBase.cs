@@ -54,7 +54,73 @@ namespace DocumentHelper.Services.Database
                     .First(e => GetKey(e, context).Equals(GetKey(updatedEntity, context)));
 
                 context.Entry(existingEntity).CurrentValues.SetValues(updatedEntity);
+
+                UpdateOwnedProperties(context, existingEntity, updatedEntity);
             }
+
+            await context.SaveChangesAsync();
+        }
+
+        private void UpdateOwnedProperties(AppDBContext context, TEntity existing, TEntity updated)
+        {
+            var ownedNavigations = context.Model.FindEntityType(typeof(TEntity))
+                ?.GetNavigations()
+                ?.Where(n => n.TargetEntityType?.IsOwned() == true) ?? [];
+
+            foreach (var navigation in ownedNavigations)
+            {
+                var updatedValue = typeof(TEntity).GetProperty(navigation.Name)?.GetValue(updated);
+                var existingValue = typeof(TEntity).GetProperty(navigation.Name)?.GetValue(existing);
+
+                if (updatedValue != null)
+                {
+                    if (existingValue == null)
+                    {
+                        // Создаем новый экземпляр owned-типа
+                        existingValue = Activator.CreateInstance(updatedValue.GetType());
+                        typeof(TEntity).GetProperty(navigation.Name)?.SetValue(existing, existingValue);
+                    }
+
+                    // Копируем значения
+                    context.Entry(existingValue).CurrentValues.SetValues(updatedValue);
+                }
+            }
+        }
+
+        public async Task SaveItems(List<Item> items)
+        {
+            using var context = new AppDBContext();
+
+            // Работаем только с ID, чтобы избежать проблем с отслеживанием
+            var itemsToUpdate = items.Select(ui => new Item
+            {
+                Id = ui.Id,
+                Name = ui.Name,
+                UnitId = ui.Unit?.Id ?? ui.UnitId,
+                SectionId = ui.Section?.Id ?? ui.SectionId,
+            }).ToList();
+
+            var existingItems = await context.Items.ToListAsync();
+
+            // Добавление новых
+            var newItems = itemsToUpdate.Where(ui => ui.Id == 0).ToList();
+            await context.Items.AddRangeAsync(newItems);
+
+            // Обновление существующих
+            foreach (var existingItem in existingItems)
+            {
+                var updatedItem = itemsToUpdate.FirstOrDefault(ui => ui.Id == existingItem.Id);
+                if (updatedItem != null)
+                {
+                    existingItem.Name = updatedItem.Name;
+                    existingItem.UnitId = updatedItem.UnitId;
+                }
+            }
+
+            // Удаление
+            var toDelete = existingItems.Where(ei =>
+                !itemsToUpdate.Any(ui => ui.Id == ei.Id));
+            context.Items.RemoveRange(toDelete);
 
             await context.SaveChangesAsync();
         }

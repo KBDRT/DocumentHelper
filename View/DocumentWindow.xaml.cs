@@ -20,10 +20,5 @@ namespace DocumentHelper
                 viewModel.Costs = viewModel.CostsReal;
             }
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

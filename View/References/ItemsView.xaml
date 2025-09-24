@@ -8,6 +8,7 @@
         Height="604" 
         Width="1192"
         Language="ru-RU" 
+        Name="ItemsWindow"
         WindowStartupLocation="CenterScreen" WindowState="Normal">
 
     <Grid Margin="6" Background="{StaticResource WindowBackgroundBrush}">
@@ -16,6 +17,13 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+
+        <Button Grid.Column="2" Content="Сохранить" 
+                Margin="10"
+                Style="{StaticResource SuccessButton}"
+                Command="{Binding SaveCommand}"
+                HorizontalAlignment="Right"
+            />
 
         <!-- Таблица с позициями -->
         <Border Grid.Row="2"
@@ -38,48 +46,50 @@
                 <TabControl.ContentTemplate>
                     <DataTemplate>
                         <DockPanel>
-                            <!-- Панель управления с кнопками и информацией -->
-                            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="10,10,10,5" VerticalAlignment="Center">
-                                <Button Content="Добавить" 
-                                Style="{StaticResource SmallButton}"
-                                Command="{Binding AddPositionCommand}"/>
+                            <Grid DockPanel.Dock="Top" Margin="10,10,10,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
 
-                                <Button Content="Удалить" 
-                                Style="{StaticResource DangerButton}"
-                                Command="{Binding RemovePositionCommand}"
-                                Margin="8,0,0,0"/>
+                                <!-- Левая группа кнопок -->
+                                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Button Content="Добавить единицу" 
+                                    Style="{StaticResource SmallButton}"
+                                    Command="{Binding AddCommand}"/>
 
-                                <!-- Информация о позициях и сумме -->
-                                <StackPanel Orientation="Horizontal" Margin="20,0,0,0" VerticalAlignment="Center" >
-                                    <TextBlock Text="{Binding PositionsCount, StringFormat='Позиций: {0}'}" 
-                                       Style="{StaticResource SummaryTextStyle}"/>
-
-                                    <TextBlock Text="{Binding SectionTotalSum, StringFormat='Сумма: {0:C}', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                       Style="{StaticResource SummaryValueStyle}"
-                                       Foreground="{StaticResource SuccessBrush}" Margin="30,0,0,0"/>
+                                    <Button Content="Удалить единицу" 
+                                    Style="{StaticResource DangerButton}"
+                                    Command="{Binding RemoveCommand}"
+                                    Margin="8,0,0,0" Cursor="Hand"/>
                                 </StackPanel>
-                            </StackPanel>
+                            </Grid>
 
-                            <!-- Таблица -->
-                            <DataGrid ItemsSource="{Binding Positions}"
-                             AutoGenerateColumns="False"
-                             Style="{StaticResource ModernDataGrid}"
-                             ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
-                             CellStyle="{StaticResource DataGridCellStyle}"
-                             SelectedItem="{Binding SelectedPosition}">
+                            <DataGrid ItemsSource="{Binding Items}"
+                              AutoGenerateColumns="False"
+                              Style="{StaticResource ModernDataGrid2}"
+                              ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle2}"
+                              CellStyle="{StaticResource DataGridCellStyle2}"
+                              SelectedItem="{Binding SelectedItem}"
+                              AlternatingRowBackground="White"
+                              HorizontalGridLinesBrush="Transparent"
+                              ColumnHeaderHeight="32"
+  >
 
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="№ п/п" Width="70" Binding="{Binding Number}" IsReadOnly="True">
-                                        <DataGridTextColumn.ElementStyle>
-                                            <Style TargetType="TextBlock">
-                                                <Setter Property="HorizontalAlignment" Value="Center"/>
-                                            </Style>
-                                        </DataGridTextColumn.ElementStyle>
-                                    </DataGridTextColumn>
-
-                                    <DataGridTextColumn Header="Наименование" Width="*" Binding="{Binding Item.Name}"/>
-                                    <DataGridTextColumn Header="Ед.измерения" Width="120" Binding="{Binding Item.Unit.ShortName}"/>
-
+                                    <DataGridTextColumn Header="Полное наименование" Width="*" Binding="{Binding Name, Mode=TwoWay}"/>
+                                    <DataGridTemplateColumn Header="Единица измерения">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ComboBox 
+                                                    SelectedItem="{Binding Unit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    ItemsSource="{Binding ElementName=ItemsWindow, Path=DataContext.AvailableUnits}"
+                                                    DisplayMemberPath="ShortName"
+                                                    IsEditable="True"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </DockPanel>

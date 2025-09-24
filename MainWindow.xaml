@@ -8,10 +8,10 @@
         Title="MainWindow" Height="450" Width="800">
 
     <Grid>
-        <Button Content="Документ" HorizontalAlignment="Left" Margin="348,180,0,0" VerticalAlignment="Top" Click="Button_Click"/>
-        <Button Content="Заказчики" HorizontalAlignment="Left" Margin="348,252,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
-        <Button Content="Единицы измерения" HorizontalAlignment="Left" Margin="348,306,0,0" VerticalAlignment="Top" Click="Button_Click_2"/>
-        <Button Content="Услуги и материалы" HorizontalAlignment="Left" Margin="348,347,0,0" VerticalAlignment="Top" Click="Button_Click_3"/>
+        <Button Content="Документ" HorizontalAlignment="Left" Margin="29,118,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <Button Content="Заказчики" HorizontalAlignment="Left" Margin="277,118,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
+        <Button Content="Единицы измерения" HorizontalAlignment="Left" Margin="375,118,0,0" VerticalAlignment="Top" Click="Button_Click_2"/>
+        <Button Content="Услуги и материалы" HorizontalAlignment="Left" Margin="518,118,0,0" VerticalAlignment="Top" Click="Button_Click_3"/>
 
     </Grid>
 </Window>

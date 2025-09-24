@@ -1,4 +1,6 @@
-﻿using DocumentHelper.Model.Document;
+﻿using DocumentHelper.Commands;
+using DocumentHelper.Model.Document;
+using DocumentHelper.Model.Reference;
 using DocumentHelper.Services;
 using PropertyChanged.SourceGenerator;
 using System.Collections.ObjectModel;
@@ -12,6 +14,8 @@ namespace DocumentHelper.ModelView
         private Document _document { get; set; } = null!;
 
         public ObservableCollection<DocumentSectionViewModel> Sections { get; set; } = new();
+
+        public ObservableCollection<Customer> AvailableCustomers { get; set; } = new();
 
         [Notify]
         private double _costs;
@@ -93,10 +97,20 @@ namespace DocumentHelper.ModelView
 
             foreach (var section in DataManager.Sections)
             {
-                DocumentSectionViewModel newSection = new(RecalsCosts) { Section = new() { Name = section.Name } };
+                DocumentSectionViewModel newSection = new(RecalsCosts) { Section = new() { Name = section.Name, Id = section.Id } };
                 Sections.Add(newSection);
                 newSection.InitializeCommands();
             }
+
+            if (DataManager.GetReferenceByType(typeof(Customer)) is List<Customer> customerReference)
+            {
+                foreach (var unit in customerReference)
+                {
+                    AvailableCustomers.Add(unit);
+                }
+            }
+
+            SaveCommand = new(SaveCommandHandler);
         }
 
         public void OnCostsChanged()
@@ -108,6 +122,13 @@ namespace DocumentHelper.ModelView
         {
             CostsReal = Sections.Sum(x => x.SectionTotalSum) * 0.05;
             TotalSum = Sections.Sum(x => x.SectionTotalSum) + Costs;
+        }
+
+        public RelayCommand SaveCommand { get; private set; }
+
+        public void SaveCommandHandler(object parameter)
+        {
+
         }
 
     }

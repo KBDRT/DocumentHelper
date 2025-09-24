@@ -13,12 +13,16 @@ namespace DocumentHelper.Services
             _repository = new RepositoryBase<Entity>();
         }
 
-
-        public async void SaveReference(IEnumerable<Entity> referenceList)
+        public async void SaveReference(IEnumerable<Entity> referenceList, string referenceName)
         {
             await _repository.SaveChangesWithTrackingAsync(referenceList);
+            DataManager.ReselectReferenceByName(referenceName);
+        }
 
-            DataManager.GetReferences();
+        public async void SaveItems(List<Item> items)
+        {
+            await _repository.SaveItems(items);
+            DataManager.ReselectReferenceByName("Item");
         }
 
     }

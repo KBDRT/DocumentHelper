@@ -1,4 +1,6 @@
-﻿namespace DocumentHelper.Services.Database
+﻿using DocumentHelper.Model;
+
+namespace DocumentHelper.Services.Database
 {
     interface IRepositoryBase<TEntity> where TEntity : class
     {
@@ -6,5 +8,7 @@
 
         public Task<List<TEntity>?> GetAllAsync(CancellationToken cancellationToken = default);
         public Task SaveChangesWithTrackingAsync(IEnumerable<TEntity> updatedEntities);
+
+        public Task SaveItems(List<Item> items);
     }
 }

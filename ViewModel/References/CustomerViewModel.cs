@@ -1,13 +1,10 @@
-﻿using DocumentHelper.Model;
-using DocumentHelper.Model.Reference;
+﻿using DocumentHelper.Model.Reference;
 using DocumentHelper.ViewModel.References.Abstractions;
-using PropertyChanged.SourceGenerator;
 
 namespace DocumentHelper.ModelView.References
 {
     public partial class CustomerViewModel : BaseViewModel
     {
-        [Notify]
         private Customer _customer = new();
 
         public int Id { get => _customer.Id; set => SetValueProperty(value, v => _customer.Id = v); }

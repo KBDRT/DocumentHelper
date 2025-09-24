@@ -8,6 +8,10 @@ namespace DocumentHelper.Model.Document
 
         public int Number { get; set; }
 
+        public double Costs { get; set; }
+
+        public double TotalSum { get => Positions.Sum(x => x.TotalSum); } 
+
         public DateTime Date { get; set; } = DateTime.Now;
 
         public DocumentDates DatePeriod { get; set; } = new();

@@ -1,12 +1,10 @@
 ﻿using DocumentHelper.Model;
 using DocumentHelper.ViewModel.References.Abstractions;
-using PropertyChanged.SourceGenerator;
 
 namespace DocumentHelper.ModelView.References
 {
     public partial class UnitViewModel : BaseViewModel
     {
-        [Notify]
         private Unit _unit = new();
 
         public int Id { get => _unit.Id; set => SetValueProperty(value, v => _unit.Id = v); }

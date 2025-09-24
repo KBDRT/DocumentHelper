@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using DocumentHelper.ModelView;
+using System.Windows;
 
 namespace DocumentHelper.View.References
 {
@@ -9,6 +10,7 @@ namespace DocumentHelper.View.References
         public ItemsView()
         {
             InitializeComponent();
+            DataContext = new ItemsViewModel();
         }
     }
 }
