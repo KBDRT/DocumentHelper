@@ -12,11 +12,19 @@
         WindowStartupLocation="CenterScreen" WindowState="Maximized">
 
     <Grid Margin="16" Background="{StaticResource WindowBackgroundBrush}">
+
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+
+        <Popup x:Name="PopupSuggest" StaysOpen="False" Placement="Bottom" PopupAnimation="Slide">
+            <Border Background="White" BorderBrush="Gray" BorderThickness="1">
+                <ListBox x:Name="ListBoxSuggest" MaxHeight="120" DisplayMemberPath="Name" SelectionChanged="ListBoxSuggest_SelectionChanged"/>
+            </Border>
+        </Popup>
 
         <!-- Верхний блок - информация о документе -->
         <Border Grid.Row="0"
@@ -254,10 +262,13 @@
                             <!-- Таблица -->
                             <DataGrid ItemsSource="{Binding Positions}"
                                      AutoGenerateColumns="False"
-                                     Style="{StaticResource ModernDataGrid}"
-                                     ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
-                                     CellStyle="{StaticResource DataGridCellStyle}"
-                                     SelectedItem="{Binding SelectedPosition}">
+                                     Style="{StaticResource ModernDataGrid2}"
+                                     ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle2}"
+                                     CellStyle="{StaticResource DataGridCellStyle2}"
+                                     SelectedItem="{Binding SelectedPosition}"
+                                     Name="DataGridPositions"
+                                     KeyUp="DataGridPositions_KeyDown_1"
+                                     PreviewTextInput="DataGridPositions_PreviewTextInput">
 
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="№ п/п" Width="70" Binding="{Binding Number}" IsReadOnly="True">
@@ -268,8 +279,18 @@
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
 
-                                    <DataGridTextColumn Header="Наименование" Width="*" Binding="{Binding Item.Name}"/>
-                                    <DataGridTextColumn Header="Ед.измерения" Width="120" Binding="{Binding Item.Unit.ShortName}"/>
+                                    <DataGridTextColumn Header="Наименование" Width="*" Binding="{Binding Item.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                    <DataGridTemplateColumn Header="Ед.измерения" Width="120">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ComboBox ItemsSource="{Binding DataContext.AllUnits, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                  DisplayMemberPath="ShortName"
+                                                  SelectedValuePath="Id"
+                                                  SelectedValue="{Binding Unit.Id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
 
                                     <DataGridTextColumn Header="Количество" Width="120" 
                                                        Binding="{Binding Amount, StringFormat=N2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 

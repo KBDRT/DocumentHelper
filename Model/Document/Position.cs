@@ -12,8 +12,11 @@
 
         public double TotalSum => Amount * Price;
 
+
+        public int DocumentId { get; set; }
         public Document? Document { get; set; }
 
+        public int SectionId { get; set; }
         public Section? Section { get; set; }
     }
 }

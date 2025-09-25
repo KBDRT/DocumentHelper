@@ -1,4 +1,7 @@
-﻿using DocumentHelper.Model.Document;
+﻿using DocumentHelper.Model;
+using DocumentHelper.Model.Document;
+using DocumentHelper.ModelView.References;
+using DocumentHelper.View.References;
 using PropertyChanged.SourceGenerator;
 using System.ComponentModel;
 
@@ -7,7 +10,24 @@ namespace DocumentHelper.ModelView
     public partial class PositionViewModel
     {
         [Notify]
-        private Position position = new();
+        private Position position = new(){ Item = new() { Unit = new()} };
+
+        private ItemViewModel _item = new();
+
+        private UnitViewModel _unit = new();
+
+        public int Id
+        {
+            get => position.Id;
+            set
+            {
+                if (position.Id != value)
+                {
+                    position.Id = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs(nameof(Id)));
+                }
+            }
+        }
 
         public int Number
         {
@@ -54,6 +74,34 @@ namespace DocumentHelper.ModelView
                 }
             }
         }
+
+        public ItemViewModel Item
+        {
+            get => _item;
+            set
+            {
+                if (_item != value)
+                {
+                    _item = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs(nameof(Item)));
+                }
+            }
+        }
+
+        public UnitViewModel Unit
+        {
+            get => _unit;
+            set
+            {
+                if (_unit != value)
+                {
+                    _unit = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs(nameof(Unit)));
+                }
+            }
+        }
+
+
 
     }
 }

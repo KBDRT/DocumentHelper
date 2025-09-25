@@ -1,4 +1,5 @@
 ﻿using DocumentHelper.Commands;
+using DocumentHelper.Model;
 using DocumentHelper.Model.Document;
 using DocumentHelper.Model.Reference;
 using DocumentHelper.Services;
@@ -13,9 +14,14 @@ namespace DocumentHelper.ModelView
         [Notify]
         private Document _document { get; set; } = null!;
 
+        private readonly ReferenceService<Document> _service = new();
         public ObservableCollection<DocumentSectionViewModel> Sections { get; set; } = new();
 
         public ObservableCollection<Customer> AvailableCustomers { get; set; } = new();
+
+        public ObservableCollection<Item> AllItems { get; set; } = new();
+
+        public ObservableCollection<Unit> AllUnits { get; set; } = new();
 
         [Notify]
         private double _costs;
@@ -95,6 +101,19 @@ namespace DocumentHelper.ModelView
         {
             _document = new() { DatePeriod = new() { DateStart = DateTime.Now, DateEnd = DateTime.Now} };
 
+            foreach (var item in DataManager.GetReferenceByType(typeof(Item)) as List<Item>)
+            {
+                for (int i = 0; i < 100; i++)
+                {
+                    AllItems.Add(item);
+                }
+            }
+
+            foreach (var unit in DataManager.GetReferenceByType(typeof(Unit)) as List<Unit>)
+            {
+                AllUnits.Add(unit);
+            }
+
             foreach (var section in DataManager.Sections)
             {
                 DocumentSectionViewModel newSection = new(RecalsCosts) { Section = new() { Name = section.Name, Id = section.Id } };
@@ -128,8 +147,31 @@ namespace DocumentHelper.ModelView
 
         public void SaveCommandHandler(object parameter)
         {
+            foreach (var section in Sections)
+            {
+                foreach(var position in section.Positions)
+                {
+                    var item = position.Item.GetItem();
+                    item.SectionId = section.Id;
+                    item.UnitId = item.Unit.Id;
+                    item.Unit = null;
 
+                    _document.Positions.Add(new()
+                    {
+                        Id = position.Id,
+                        Amount = position.Amount,
+                        Number = position.Number,
+                        Price = position.Price,
+                        SectionId = section.Id,
+                        Item = item,
+                        DocumentId = Document.Id,
+                    });
+                }
+            }
+
+            _service.SaveDocument(_document);
         }
+
 
     }
 }

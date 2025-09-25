@@ -1,4 +1,5 @@
 ﻿using DocumentHelper.Model;
+using DocumentHelper.Model.Document;
 
 namespace DocumentHelper.Services.Database
 {
@@ -10,5 +11,7 @@ namespace DocumentHelper.Services.Database
         public Task SaveChangesWithTrackingAsync(IEnumerable<TEntity> updatedEntities);
 
         public Task SaveItems(List<Item> items);
+
+        public Task SaveDocument(Document document);
     }
 }

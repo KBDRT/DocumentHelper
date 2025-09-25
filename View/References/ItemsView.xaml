@@ -78,7 +78,7 @@
   >
 
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Полное наименование" Width="*" Binding="{Binding Name, Mode=TwoWay}"/>
+                                    <DataGridTextColumn Header="Полное наименование" Width="*" Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                     <DataGridTemplateColumn Header="Единица измерения">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>

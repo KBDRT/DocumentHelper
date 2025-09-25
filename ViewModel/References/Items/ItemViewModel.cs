@@ -15,7 +15,6 @@ namespace DocumentHelper.ModelView
 
         public Section? Section { get => _item.Section; set => SetValueProperty(value, v => _item.Section = v); }
 
-
         public Item GetItem()
         {
             return _item;

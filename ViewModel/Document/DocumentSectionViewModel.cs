@@ -11,7 +11,7 @@ namespace DocumentHelper.ModelView
     public partial class DocumentSectionViewModel
     {
         [Notify]
-        private Section? _section;
+        private Section? _section = null!;
 
         private ObservableCollection<PositionViewModel> _positions = new();
 
@@ -20,6 +20,19 @@ namespace DocumentHelper.ModelView
         public event Action PositionTotalSumChanged;
 
         public string Name { get => Section.Name ?? "Без названия"; }
+
+        public int Id
+        {
+            get => _section.Id;
+            set
+            {
+                if (_section.Id != value)
+                {
+                    _section.Id = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs(nameof(Id)));
+                }
+            }
+        }
 
         public ObservableCollection<PositionViewModel> Positions
         {

@@ -1,7 +1,10 @@
 ﻿
 using DocumentHelper.Infrastructure.Database;
 using DocumentHelper.Model;
+using DocumentHelper.Model.Document;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DocumentHelper.Services.Database
 {
@@ -128,9 +131,24 @@ namespace DocumentHelper.Services.Database
         private object GetKey(TEntity entity, AppDBContext context)
         {
             var keyName = context.Model.FindEntityType(typeof(TEntity))
-                .FindPrimaryKey().Properties.Select(p => p.Name).First();
+                ?.FindPrimaryKey().Properties.Select(p => p.Name).First();
 
             return typeof(TEntity).GetProperty(keyName).GetValue(entity);
+        }
+
+        public async Task SaveDocument(Document document)
+        {
+            using var context = new AppDBContext();
+
+            if (document.Id > 0)
+            {
+                await context.Documents
+                          .Where(x => x.Id == document.Id)
+                          .ExecuteDeleteAsync();
+            }
+
+            await context.Documents.AddAsync(document);
+            await context.SaveChangesAsync();
         }
     }
 }

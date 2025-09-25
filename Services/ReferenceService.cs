@@ -1,4 +1,5 @@
 ﻿using DocumentHelper.Model;
+using DocumentHelper.Model.Document;
 using DocumentHelper.Services.Database;
 using System.Collections.ObjectModel;
 
@@ -23,6 +24,12 @@ namespace DocumentHelper.Services
         {
             await _repository.SaveItems(items);
             DataManager.ReselectReferenceByName("Item");
+        }
+
+        public async void SaveDocument(Document document)
+        {
+            await _repository.SaveDocument(document);
+            //DataManager.ReselectReferenceByName("Item");
         }
 
     }
