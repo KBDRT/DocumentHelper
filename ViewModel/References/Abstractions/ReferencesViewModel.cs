@@ -1,9 +1,9 @@
-﻿using DocumentHelper.Commands;
-using DocumentHelper.Model;
-using DocumentHelper.Services;
+﻿using DocumentHelper.Model;
+using DocumentHelper.Services.Database;
+using DocumentHelper.Services.DataServices;
+using DocumentHelper.ViewModel.Commands;
 using PropertyChanged.SourceGenerator;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 
 namespace DocumentHelper.ModelView.ReferencesVM
 {
@@ -11,9 +11,9 @@ namespace DocumentHelper.ModelView.ReferencesVM
                                                                                where EntityViewModel : class, new()
     {
 
-        private readonly ReferenceService<Entity> _service = new();
+        private readonly IRepositoryBase<Entity> _repository = new RepositoryBase<Entity>();
 
-        [Notify]
+        [Notify]        
         protected ObservableCollection<EntityViewModel> _reference { get; set; } = new();
 
         public EntityViewModel? SelectedItem { get; set; }
@@ -25,31 +25,21 @@ namespace DocumentHelper.ModelView.ReferencesVM
 
         protected string ReferenceName { get; set; } = string.Empty;
 
-        public ObservableCollection<EntityViewModel> Reference
-        {
-            get => _reference;
-            set
-            {
-                if (_reference != value)
-                {
-                    _reference = value;
-                    OnPropertyChanged(new PropertyChangedEventArgs(nameof(Reference)));
-                }
-            }
-        }
-
         public ReferencesViewModel()
         {
             AddCommand = new RelayCommand(AddCommandHandler);
             RemoveCommand = new RelayCommand(RemoveCommandHandler);
             SaveCommand = new RelayCommand(SaveCommandHandler);
 
-            foreach (var item in DataManager.GetReferenceByType(typeof(Entity)))
+            if (ReferencesManager.GetReferenceByType<Entity>() is List<Entity> items)
             {
-                var newItem = CreateEntityViewModel(item);
-                if (newItem != null)
+                foreach (var item in items)
                 {
-                    Reference.Add(newItem);
+                    var newItem = CreateEntityViewModel(item);
+                    if (newItem != null)
+                    {
+                        Reference.Add(newItem);
+                    }
                 }
             }
         }
@@ -75,7 +65,7 @@ namespace DocumentHelper.ModelView.ReferencesVM
                 return; 
         }
 
-        private void SaveCommandHandler(object parameter)
+        private async void SaveCommandHandler(object parameter)
         {
             var entityList = _reference.Select(uvm => CreateEntityFromViewModel(uvm)).ToList();
             if (entityList == null)
@@ -83,9 +73,10 @@ namespace DocumentHelper.ModelView.ReferencesVM
                 return;
             }
 
-            _service.SaveReference(entityList, ReferenceName);
-            Reference.Clear();
+            await _repository.SaveChangesWithTrackingAsync(entityList);
+            ReferencesManager.SelectReferenceByName(ReferenceName);
 
+            Reference.Clear();
             foreach (var item in entityList)
             {
                 if (item != null)

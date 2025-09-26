@@ -1,7 +1,11 @@
 ﻿using DocumentHelper.Extensions;
 using DocumentHelper.Model;
+using DocumentHelper.Model.Document;
 using DocumentHelper.ModelView;
-using DocumentHelper.ModelView.References;
+using DocumentHelper.Services;
+using DocumentHelper.Services.DataServices;
+using DocumentHelper.ViewModel.References.Units;
+using System.Reflection.Metadata;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -15,10 +19,17 @@ namespace DocumentHelper
 
         private PositionViewModel? _currentPosition;
 
-        public DocumentWindow()
+        public DocumentWindow(int documentId = 0)
         {
             InitializeComponent();
-            DataContext = new DocumentViewModel();
+
+            Model.Document.Document? document = null;
+            if (documentId != 0)
+            {
+                document = (ReferencesManager.GetReferenceByName("Document") as List<Model.Document.Document>).SingleOrDefault(x => x.Id == documentId);   
+            }
+
+            DataContext = new DocumentViewModel(document);
 
             if (DataContext is DocumentViewModel viewModel)
             {
@@ -31,6 +42,7 @@ namespace DocumentHelper
             if (DataContext is DocumentViewModel viewModel)
             {
                 viewModel.Costs = viewModel.CostsReal;
+                viewModel.RecalsCosts();
             }
         }
 
@@ -75,7 +87,7 @@ namespace DocumentHelper
                     { 
                         Name = selectedItem.Name,
                         Unit = selectedItem.Unit,
-
+                        Id = selectedItem.Id,
                     };
 
                     _currentPosition.Unit = new UnitViewModel()

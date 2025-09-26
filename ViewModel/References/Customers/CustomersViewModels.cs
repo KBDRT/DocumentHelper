@@ -2,7 +2,7 @@
 using DocumentHelper.Model.Reference;
 using DocumentHelper.ModelView.ReferencesVM;
 
-namespace DocumentHelper.ModelView.References
+namespace DocumentHelper.ViewModel.References.Customers
 {
     public partial class CustomersViewModel : ReferencesViewModel<Customer, CustomerViewModel>
     {

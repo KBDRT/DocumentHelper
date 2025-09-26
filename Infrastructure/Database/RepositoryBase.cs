@@ -145,6 +145,9 @@ namespace DocumentHelper.Services.Database
                 await context.Documents
                           .Where(x => x.Id == document.Id)
                           .ExecuteDeleteAsync();
+
+                document.Id = 0;
+
             }
 
             await context.Documents.AddAsync(document);

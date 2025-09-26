@@ -1,6 +1,8 @@
-﻿using DocumentHelper.Commands;
-using DocumentHelper.Model;
+﻿using DocumentHelper.Model;
 using DocumentHelper.Services;
+using DocumentHelper.Services.Database;
+using DocumentHelper.Services.DataServices;
+using DocumentHelper.ViewModel.Commands;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -9,7 +11,7 @@ namespace DocumentHelper.ModelView
 {
     public partial class ItemsViewModel
     {
-        private readonly ReferenceService<Item> _reference = new();
+        private readonly IRepositoryBase<Item> _repository = new RepositoryBase<Item>();
 
         public ObservableCollection<ItemsSectionViewModel> Sections { get; set; } = new();
 
@@ -18,7 +20,7 @@ namespace DocumentHelper.ModelView
         public RelayCommand SaveCommand { get; private set; } = null!;
         public ItemsViewModel()
         {
-            if (DataManager.GetReferenceByType(typeof(Unit)) is List<Unit> unitsReference)
+            if (ReferencesManager.GetReferenceByName("Unit") is List<Unit> unitsReference)
             {
                 foreach (var unit in unitsReference)
                 {
@@ -26,8 +28,9 @@ namespace DocumentHelper.ModelView
                 }
             }
 
-            var items = DataManager.GetReferenceByType(typeof(Item)) as List<Item>;
-            foreach (var section in DataManager.Sections)
+            var items = ReferencesManager.GetReferenceByName("Item") as List<Item>;
+            var sections = ReferencesManager.GetReferenceByName("Section") as List<Section>;
+            foreach (var section in sections)
             {
                 var itemsForSection = new ObservableCollection<ItemViewModel>();
                 foreach (var item in items.Where(x => x.SectionId == section.Id))
@@ -49,7 +52,7 @@ namespace DocumentHelper.ModelView
             SaveCommand = new(SaveCommandHandler);
         }
 
-        private void SaveCommandHandler(object parameter)
+        private async void SaveCommandHandler(object parameter)
         {
             List<Item> items = new();
             foreach (var section in Sections)
@@ -71,7 +74,8 @@ namespace DocumentHelper.ModelView
                 return;
             }
 
-            _reference.SaveItems(items);
+            await _repository.SaveItems(items);
+            ReferencesManager.SelectReferenceByName("Item");
         }
     }
 }

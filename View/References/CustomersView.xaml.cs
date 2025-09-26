@@ -1,4 +1,4 @@
-﻿using DocumentHelper.ModelView.References;
+﻿using DocumentHelper.ViewModel.References.Customers;
 using System.Windows;
 
 namespace DocumentHelper.View.References

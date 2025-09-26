@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace DocumentHelper.Commands
+namespace DocumentHelper.ViewModel.Commands
 {
     public class RelayCommand : ICommand
     {

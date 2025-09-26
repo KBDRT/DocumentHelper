@@ -1,8 +1,11 @@
-﻿using DocumentHelper.Commands;
-using DocumentHelper.Model;
+﻿using DocumentHelper.Model;
 using DocumentHelper.Model.Document;
 using DocumentHelper.Model.Reference;
 using DocumentHelper.Services;
+using DocumentHelper.Services.Database;
+using DocumentHelper.Services.DataServices;
+using DocumentHelper.Services.Mapping;
+using DocumentHelper.ViewModel.Commands;
 using PropertyChanged.SourceGenerator;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -14,7 +17,7 @@ namespace DocumentHelper.ModelView
         [Notify]
         private Document _document { get; set; } = null!;
 
-        private readonly ReferenceService<Document> _service = new();
+        private readonly IRepositoryBase<Document> _repository = new RepositoryBase<Document>();
         public ObservableCollection<DocumentSectionViewModel> Sections { get; set; } = new();
 
         public ObservableCollection<Customer> AvailableCustomers { get; set; } = new();
@@ -23,8 +26,6 @@ namespace DocumentHelper.ModelView
 
         public ObservableCollection<Unit> AllUnits { get; set; } = new();
 
-        [Notify]
-        private double _costs;
 
         [Notify]
         private double _costsReal;
@@ -78,7 +79,7 @@ namespace DocumentHelper.ModelView
             {
                 if (_document.DatePeriod.DateStart != value)
                 {
-                    _document.Date = value;
+                    _document.DatePeriod.DateStart = value;
                     OnPropertyChanged(new PropertyChangedEventArgs(nameof(DateStart)));
                 }
             }
@@ -97,31 +98,88 @@ namespace DocumentHelper.ModelView
             }
         }
 
-        public DocumentViewModel()
+        public double Costs
         {
-            _document = new() { DatePeriod = new() { DateStart = DateTime.Now, DateEnd = DateTime.Now} };
-
-            foreach (var item in DataManager.GetReferenceByType(typeof(Item)) as List<Item>)
+            get => _document.Costs;
+            set
             {
-                for (int i = 0; i < 100; i++)
+                if (_document.Costs != value)
                 {
+                    _document.Costs = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs(nameof(Costs)));
+                    RecalsCosts();
+                    OnPropertyChanged(new PropertyChangedEventArgs(nameof(TotalSum)));
+                }
+            }
+        }
+
+        public DocumentViewModel(Document? document = null)
+        {
+            var sections = ReferencesManager.GetReferenceByName("Section") as List<Section>;
+
+            if (document == null)
+            {
+                _document = new() { DatePeriod = new() { DateStart = DateTime.Now, DateEnd = DateTime.Now } };
+
+                if (sections != null)
+                {
+                    foreach (var section in sections)
+                    {
+                        DocumentSectionViewModel newSection = new(RecalsCosts) { Section = new() { Name = section.Name, Id = section.Id } };
+                        Sections.Add(newSection);
+                        newSection.InitializeCommands();
+                    }
+                }
+            }
+            else
+            {
+                _document = document;
+
+                if (sections != null)
+                {
+                    foreach (var section in sections)
+                    {
+                        ObservableCollection<PositionViewModel> positions = new();
+                        foreach (var position in document.Positions.Where(x => x.SectionId == section.Id))
+                        {
+                            var positionViewModel = MappingService.Mapper.Map<PositionViewModel>(position);
+                            positions.Add(positionViewModel);
+                        }
+
+                        DocumentSectionViewModel newSection = new(RecalsCosts)
+                        {
+                            Section = new() { Name = section.Name, Id = section.Id },
+                            Positions = positions,
+                        };
+
+                        Sections.Add(newSection);
+                        newSection.InitializeCommands();
+                    }
+                }
+
+            }
+
+            if (ReferencesManager.GetReferenceByName("Item") is List<Item> items)
+            {
+                foreach (var item in items)
+                {
+                    //for (int i = 0; i < 100; i++)
+                    //{
                     AllItems.Add(item);
+                    //}
                 }
             }
 
-            foreach (var unit in DataManager.GetReferenceByType(typeof(Unit)) as List<Unit>)
+
+            if (ReferencesManager.GetReferenceByName("Unit") is List<Unit> units)
             {
-                AllUnits.Add(unit);
+                foreach (var unit in units)
+                {
+                    AllUnits.Add(unit);
+                }
             }
 
-            foreach (var section in DataManager.Sections)
-            {
-                DocumentSectionViewModel newSection = new(RecalsCosts) { Section = new() { Name = section.Name, Id = section.Id } };
-                Sections.Add(newSection);
-                newSection.InitializeCommands();
-            }
-
-            if (DataManager.GetReferenceByType(typeof(Customer)) is List<Customer> customerReference)
+            if (ReferencesManager.GetReferenceByName("Customer") is List<Customer> customerReference)
             {
                 foreach (var unit in customerReference)
                 {
@@ -130,6 +188,7 @@ namespace DocumentHelper.ModelView
             }
 
             SaveCommand = new(SaveCommandHandler);
+            RecalsCosts();
         }
 
         public void OnCostsChanged()
@@ -145,16 +204,24 @@ namespace DocumentHelper.ModelView
 
         public RelayCommand SaveCommand { get; private set; }
 
-        public void SaveCommandHandler(object parameter)
+        public async void SaveCommandHandler(object parameter)
         {
+            _document.Positions.Clear();
             foreach (var section in Sections)
             {
                 foreach(var position in section.Positions)
                 {
                     var item = position.Item.GetItem();
                     item.SectionId = section.Id;
-                    item.UnitId = item.Unit.Id;
-                    item.Unit = null;
+                    item.UnitId = position.Unit.Id;
+
+                    var itemId = item.Id;
+
+                    if (item.Id != 0)
+                    {
+                        item = null;
+                        //item.UnitId = item.Unit.Id;
+                    }
 
                     _document.Positions.Add(new()
                     {
@@ -163,13 +230,16 @@ namespace DocumentHelper.ModelView
                         Number = position.Number,
                         Price = position.Price,
                         SectionId = section.Id,
+                        ItemId = itemId,
                         Item = item,
                         DocumentId = Document.Id,
                     });
                 }
             }
 
-            _service.SaveDocument(_document);
+            await _repository.SaveDocument(_document);
+            ReferencesManager.SelectReferenceByName("Document");
+            ReferencesManager.SelectReferenceByName("Item");
         }
 
 

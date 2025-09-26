@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using PropertyChanged.SourceGenerator;
-using DocumentHelper.Commands;
+using DocumentHelper.ViewModel.Commands;
 
 namespace DocumentHelper.ModelView
 {

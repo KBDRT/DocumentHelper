@@ -1,7 +1,7 @@
 ﻿using DocumentHelper.Model;
 using DocumentHelper.ViewModel.References.Abstractions;
 
-namespace DocumentHelper.ModelView.References
+namespace DocumentHelper.ViewModel.References.Units
 {
     public partial class UnitViewModel : BaseViewModel
     {

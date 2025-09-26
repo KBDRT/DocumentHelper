@@ -1,7 +1,7 @@
 ﻿using DocumentHelper.Model;
 using DocumentHelper.Model.Document;
-using DocumentHelper.ModelView.References;
 using DocumentHelper.View.References;
+using DocumentHelper.ViewModel.References.Units;
 using PropertyChanged.SourceGenerator;
 using System.ComponentModel;
 

@@ -4,6 +4,7 @@
     {
         public int Number { get; set; }
 
+        public int ItemId { get; set; }
         public Item? Item { get; set; }
 
         public double Amount { get; set; }

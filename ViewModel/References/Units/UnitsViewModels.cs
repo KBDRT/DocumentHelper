@@ -1,7 +1,7 @@
 ﻿using DocumentHelper.Model;
 using DocumentHelper.ModelView.ReferencesVM;
 
-namespace DocumentHelper.ModelView.References
+namespace DocumentHelper.ViewModel.References.Units
 {
     public partial class UnitsViewModel : ReferencesViewModel<Unit, UnitViewModel>
     {

@@ -2,32 +2,45 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:DocumentHelper"
         mc:Ignorable="d"
         Title="Заказчики" 
         Height="650" 
         Width="1000"
         Language="ru-RU" 
-        WindowStartupLocation="CenterScreen" WindowState="Normal">
+        WindowStartupLocation="CenterScreen" WindowState="Normal"
+        WindowStyle="None">
 
-    <Grid Margin="6" Background="{StaticResource WindowBackgroundBrush}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <WindowChrome.WindowChrome>
+        <WindowChrome GlassFrameThickness="0" CornerRadius="0" CaptionHeight="0"></WindowChrome>
+    </WindowChrome.WindowChrome>
 
-        <!-- Таблица с позициями -->
+    <Grid>
+
+
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <local:TitleBar Title="Заказчики">
+
+            </local:TitleBar>
+
+            <!-- Таблица с позициями -->
         <Border Grid.Row="2"
                 Background="White"
                 CornerRadius="6"
-                Padding="0"
+                Margin="12,0"
                 BorderBrush="{StaticResource BorderBrush}"
-                BorderThickness="0">
+                BorderThickness="0" Cursor="">
 
             <DockPanel>
                 <!-- Верхняя панель с кнопками -->
-                <Grid DockPanel.Dock="Top" Margin="10,10,10,5">
+                <Grid DockPanel.Dock="Top" Margin="10,4,10,5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
@@ -36,11 +49,11 @@
 
                     <!-- Левая группа кнопок -->
                     <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Button Content="Добавить единицу" 
+                        <Button Content="Добавить заказчика" 
                     Style="{StaticResource SmallButton}"
                     Command="{Binding AddCommand}"/>
 
-                        <Button Content="Удалить единицу" 
+                        <Button Content="Удалить заказчика" 
                     Style="{StaticResource DangerButton}"
                     Command="{Binding RemoveCommand}"
                     Margin="8,0,0,0" Cursor="Hand"/>
@@ -111,5 +124,6 @@
                 </DataGrid>
             </DockPanel>
         </Border>
+        </Grid>
     </Grid>
 </Window>
