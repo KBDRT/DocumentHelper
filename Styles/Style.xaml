@@ -10,10 +10,10 @@
     <Style x:Key="WindowMainPanelStyle" TargetType="{x:Type Border}">
         <!--<Setter Property="BorderBrush" Value="White" />
         <Setter Property="BorderThickness" Value="1" />-->
-        <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource PrimaryBrushTitle}"/>
         <Style.Triggers>
             <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=WindowState}" Value="Maximized">
-                <Setter Property="Margin" Value="6" />
+                <Setter Property="Margin" Value="6,6,6,0" />
             </DataTrigger>
         </Style.Triggers>
     </Style>
@@ -58,7 +58,7 @@
     </Style>
 
     <!-- Цветовая палитра -->
-    <Color x:Key="PrimaryColor">#2C3E50</Color>
+    <Color x:Key="PrimaryColor">#4A6583</Color>
     <Color x:Key="SecondaryColor">#34495E</Color>
     <Color x:Key="AccentColor">#3498DB</Color>
     <Color x:Key="SuccessColor">#27AE60</Color>
@@ -70,6 +70,7 @@
 
     <!-- Кисти -->
     <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}"/>
+    <SolidColorBrush x:Key="PrimaryBrushTitle" Color="#2C3E50"/>
     <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource SecondaryColor}"/>
     <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}"/>
     <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource SuccessColor}"/>
@@ -92,8 +93,8 @@
 
     <Style x:Key="SmallLabelStyle" TargetType="Label">
         <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
-        <Setter Property="FontSize" Value="12"/>
-        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontWeight" Value="DemiBold"/>
         <Setter Property="Margin" Value="0,0,2,0"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
@@ -191,6 +192,7 @@
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
     </Style>
+
 
     <Style x:Key="SummaryTextStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>

@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using DocumentHelper.Model.Reference;
+using System.Collections.ObjectModel;
 
 namespace DocumentHelper.Model.Document
 {
@@ -6,7 +7,9 @@ namespace DocumentHelper.Model.Document
     {
         public int SystemNumber { get; set; }
 
-        public int Number { get; set; }
+        public string Number { get; set; } = string.Empty;
+
+        public Customer? Customer { get; set; }
 
         public double Costs { get; set; }
 
@@ -17,5 +20,7 @@ namespace DocumentHelper.Model.Document
         public DocumentDates DatePeriod { get; set; } = new();
 
         public ObservableCollection<Position> Positions { get; set; } = new();
+
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
     }
 }

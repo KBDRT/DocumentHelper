@@ -16,91 +16,81 @@
         <WindowChrome GlassFrameThickness="0" CornerRadius="0" CaptionHeight="0"></WindowChrome>
     </WindowChrome.WindowChrome>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <Border BorderBrush="{StaticResource TextBrush}" 
+        BorderThickness="1"
+        Background="White">
+        <Grid>
 
-        <local:TitleBar x:Name="TitleBar" Title="Единицы измерения">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        </local:TitleBar>
+            <local:TitleBar Title="Единицы измерения">
 
-        <!-- Таблица с позициями -->
-        <Border Grid.Row="2"
+            </local:TitleBar>
+
+            <!-- Таблица с позициями -->
+            <Border Grid.Row="2"
                 Background="White"
                 CornerRadius="6"
-                Padding="0"
                 Margin="12,0"
                 BorderBrush="{StaticResource BorderBrush}"
-                BorderThickness="0">
+                BorderThickness="0" Cursor="">
 
-            <DockPanel>
-                <!-- Верхняя панель с кнопками -->
-                <Grid DockPanel.Dock="Top" Margin="10,4,10,5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+                <DockPanel>
+                    <!-- Верхняя панель с кнопками -->
+                    <Grid DockPanel.Dock="Top" Margin="10,4,10,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-                    <!-- Левая группа кнопок -->
-                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Button Content="Добавить единицу" 
-                    Style="{StaticResource SmallButton}"
-                    Command="{Binding AddCommand}"/>
+                        <!-- Левая группа кнопок -->
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Cursor="">
 
-                        <Button Content="Удалить единицу" 
-                    Style="{StaticResource DangerButton}"
-                    Command="{Binding RemoveCommand}"
-                    Margin="8,0,0,0" Cursor="Hand"/>
-                    </StackPanel>
-
-                    <!-- Центральная информация -->
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="20,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <TextBlock Text="{Binding PositionsCount, StringFormat='Позиций: {0}'}" 
-                       Style="{StaticResource SummaryTextStyle}"/>
-
-                        <TextBlock Text="{Binding SectionTotalSum, StringFormat='Сумма: {0:C}', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                       Style="{StaticResource SummaryValueStyle}"
-                       Foreground="{StaticResource SuccessBrush}" Margin="30,0,0,0"/>
-                    </StackPanel>
-
-                    <!-- Правая группа с кнопкой Сохранить -->
-                    <Button Grid.Column="2" Content="Сохранить" 
-                            Style="{StaticResource SuccessButton}"
-                            Command="{Binding SaveCommand}"
-                            HorizontalAlignment="Right"
+                            <Button Content="Сохранить" 
+                                Style="{StaticResource SuccessButton}"
+                                Command="{Binding SaveCommand}" Cursor="Hand"
                             />
-                </Grid>
 
-                <!-- Таблица -->
-                <DataGrid ItemsSource="{Binding Reference}"
-                  AutoGenerateColumns="False"
-                  Style="{StaticResource ModernDataGrid2}"
-                  ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle2}"
-                  CellStyle="{StaticResource DataGridCellStyle2}"
-                  SelectedItem="{Binding SelectedItem}"
-                  AlternatingRowBackground="White"
-                  HorizontalGridLinesBrush="Transparent"
-                  ColumnHeaderHeight="32"
-                  >
+                            <StackPanel Orientation="Horizontal" Margin="50,0">
+                                <Button Content="Добавить заказчика" 
+                                Style="{StaticResource SmallButton}"
+                                Command="{Binding AddCommand}"
+                            />
 
-                    <DataGrid.Columns>
-                        <!--<DataGridTextColumn Header="№ п/п" Width="70" Binding="{Binding Number, Mode=OneWay}" IsReadOnly="True">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>-->
+                                <Button Content="Удалить заказчика" 
+                                Style="{StaticResource DangerButton}"
+                                Command="{Binding RemoveCommand}"
+                                Cursor="Hand"
+                            />
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
 
-                        <DataGridTextColumn Header="Полное наименование" Width="*" Binding="{Binding FullName, Mode=TwoWay}"/>
-                        <DataGridTextColumn Header="Краткое наименование" Width="*" Binding="{Binding ShortName, Mode=TwoWay}"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </DockPanel>
-        </Border>
-    </Grid>
+                    <!-- Таблица -->
+                    <DataGrid ItemsSource="{Binding Reference}"
+                      AutoGenerateColumns="False"
+                      Style="{StaticResource ModernDataGrid2}"
+                      ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle2}"
+                      CellStyle="{StaticResource DataGridCellStyle2}"
+                      SelectedItem="{Binding SelectedItem}"
+                      AlternatingRowBackground="White"
+                      HorizontalGridLinesBrush="Transparent"
+                      ColumnHeaderHeight="32"
+                      Margin="0,0,0,12"
+                      >
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Полное наименование" Width="*" Binding="{Binding FullName, Mode=TwoWay}"/>
+                            <DataGridTextColumn Header="Краткое наименование" Width="*" Binding="{Binding ShortName, Mode=TwoWay}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </Border>
+        </Grid>
+    </Border>
 </Window>

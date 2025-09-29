@@ -17,310 +17,315 @@
         <WindowChrome GlassFrameThickness="1" CornerRadius="1" CaptionHeight="0"></WindowChrome>
     </WindowChrome.WindowChrome>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <Border BorderBrush="{StaticResource TextBrush}" 
+        BorderThickness="1"
+        Background="White">
 
-        <local:TitleBar x:Name="TitleBar" Title="Документ" Grid.Row="0">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        </local:TitleBar>
+            <local:TitleBar x:Name="TitleBar" Title="Документ" Grid.Row="0">
 
-        <Popup x:Name="PopupSuggest" StaysOpen="False" Placement="Bottom" PopupAnimation="Slide">
-            <Border Background="White" BorderBrush="Gray" BorderThickness="1">
-                <ListBox x:Name="ListBoxSuggest" MaxHeight="120" DisplayMemberPath="Name" SelectionChanged="ListBoxSuggest_SelectionChanged"/>
+            </local:TitleBar>
+
+            <Popup x:Name="PopupSuggest" StaysOpen="False" Placement="Bottom" PopupAnimation="Slide">
+                <Border Background="White" BorderBrush="Gray" BorderThickness="1">
+                    <ListBox x:Name="ListBoxSuggest" MaxHeight="120" DisplayMemberPath="Name" SelectionChanged="ListBoxSuggest_SelectionChanged"/>
+                </Border>
+            </Popup>
+
+            <!-- Верхний блок - информация о документе -->
+            <Border Grid.Row="1"
+                    Background="White"
+                    CornerRadius="6"
+                    Padding="6"
+                    Margin="12"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="1"
+                    Effect="{StaticResource ShadowEffect}">
+
+                <Grid Cursor="">
+                    <Grid.ColumnDefinitions>
+                        <!--<ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="60"/>-->
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--<Label Grid.Column="0" Content="Сист. номер:" Style="{StaticResource SmallLabelStyle}"/>
+                    <TextBlock Grid.Column="1" Text="0" VerticalAlignment="Center" Style="{StaticResource SummaryValueStyle}"/>-->
+
+                    <Label Grid.Column="0" Content="Номер:" Style="{StaticResource SmallLabelStyle}"/>
+                    <TextBox Grid.Column="1" Height="28" VerticalContentAlignment="Center" Text="{Binding Number, Mode=TwoWay}"/>
+
+                    <Label Grid.Column="2" Content="Дата:" Style="{StaticResource SmallLabelStyle}"/>
+                    <DatePicker Grid.Column="3" Style="{StaticResource VerySmallDatePicker}" SelectedDate="{Binding Date, Mode=TwoWay}"/>
+
+                    <Label Grid.Column="4" Content="Организация:" Style="{StaticResource SmallLabelStyle}"/>
+
+                    <ComboBox 
+                        SelectedItem="{Binding Unit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        ItemsSource="{Binding ElementName=DocumentShowWindow, Path=DataContext.AvailableCustomers}"
+                        DisplayMemberPath="FullInfo"
+                        Grid.Column="5" Style="{StaticResource SmallComboBox}"/>
+
+                    <Label Grid.Column="6" Content="Начало:" Style="{StaticResource SmallLabelStyle}"/>
+                    <DatePicker Grid.Column="7" Style="{StaticResource VerySmallDatePicker}" SelectedDate="{Binding DateStart, Mode=TwoWay}"/>
+
+                    <Label Grid.Column="8" Content="Конец:" Style="{StaticResource SmallLabelStyle}"/>
+                    <DatePicker Grid.Column="9" Style="{StaticResource VerySmallDatePicker}" SelectedDate="{Binding DateEnd, Mode=TwoWay}"/>
+
+                    <Button Grid.Column="10" Content="Сохранить" Style="{StaticResource SuccessButton}" Height="28" Padding="12,4" Margin="8,0,0,0" Command="{Binding SaveCommand}"/>
+                    <Button Grid.Column="11" Content="Создать файл" Style="{StaticResource PrimaryButton}" Height="28" Padding="12,4" Margin="8,0,0,0"/>
+                </Grid>
             </Border>
-        </Popup>
 
-        <!-- Верхний блок - информация о документе -->
-        <Border Grid.Row="1"
-                Background="White"
-                CornerRadius="6"
-                Padding="6"
-                Margin="12"
-                BorderBrush="{StaticResource BorderBrush}"
-                BorderThickness="1"
-                Effect="{StaticResource ShadowEffect}">
+            <!-- Блок с итогами по разделам -->
+            <Border Grid.Row="2"
+                    Background="{StaticResource SummaryBackgroundBrush}"
+                    CornerRadius="6"
+                    Padding="6"
+                    Margin="12,0"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="1">
+                <StackPanel>
+                    <!-- Заголовки столбцов -->
+                    <Grid Margin="0,0,0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="250"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="60"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="60"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0"
+                     Text="Раздел"
+                     Style="{StaticResource SummaryTextStyleBox}"
+                     FontWeight="Bold"
+                     BorderThickness="0"
+                     Background="Transparent"
+                     IsReadOnly="True"
+                     Focusable="False"/>
 
-                <Label Grid.Column="0" Content="Сист. номер:" Style="{StaticResource SmallLabelStyle}"/>
-                <TextBlock Grid.Column="1" Text="0" VerticalAlignment="Center" Style="{StaticResource SummaryValueStyle}"/>
+                        <TextBox Grid.Column="2"
+                     Text="Сумма"
+                     Style="{StaticResource SummaryValueStyleBox}"
+                     FontWeight="Bold"
+                     BorderThickness="0"
+                     Background="Transparent"
+                     IsReadOnly="True"
+                     Focusable="False"/>
+                    </Grid>
 
-                <Label Grid.Column="2" Content="Номер:" Style="{StaticResource SmallLabelStyle}"/>
-                <TextBox Grid.Column="3" Height="28" VerticalContentAlignment="Center" Text="{Binding Number, Mode=TwoWay}"/>
+                    <!-- Итоги по разделам -->
+                    <ItemsControl ItemsSource="{Binding Sections}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="250"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
 
-                <Label Grid.Column="4" Content="Дата:" Style="{StaticResource SmallLabelStyle}"/>
-                <DatePicker Grid.Column="5" Style="{StaticResource VerySmallDatePicker}" SelectedDate="{Binding Date, Mode=TwoWay}"/>
+                                    <TextBox Grid.Column="0"
+                                 Text="{Binding Name, Mode=OneWay, StringFormat='{}{0}'}" 
+                                 Style="{StaticResource SummaryTextStyleBox}"
+                                 BorderThickness="0"
+                                 Background="Transparent"
+                                 IsReadOnly="True"
+                                 />
 
-                <Label Grid.Column="6" Content="Организация:" Style="{StaticResource SmallLabelStyle}"/>
-
-                <ComboBox 
-                    SelectedItem="{Binding Unit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    ItemsSource="{Binding ElementName=DocumentShowWindow, Path=DataContext.AvailableCustomers}"
-                    DisplayMemberPath="FullInfo"
-                    Grid.Column="7" Style="{StaticResource SmallComboBox}"/>
-
-                <Label Grid.Column="8" Content="Начало:" Style="{StaticResource SmallLabelStyle}"/>
-                <DatePicker Grid.Column="9" Style="{StaticResource VerySmallDatePicker}" SelectedDate="{Binding DateStart, Mode=TwoWay}"/>
-
-                <Label Grid.Column="10" Content="Конец:" Style="{StaticResource SmallLabelStyle}"/>
-                <DatePicker Grid.Column="11" Style="{StaticResource VerySmallDatePicker}" SelectedDate="{Binding DateEnd, Mode=TwoWay}"/>
-
-                <Button Grid.Column="12" Content="Сохранить" Style="{StaticResource SuccessButton}" Height="28" Padding="12,4" Margin="8,0,0,0" Command="{Binding SaveCommand}"/>
-                <Button Grid.Column="13" Content="Создать файл" Style="{StaticResource PrimaryButton}" Height="28" Padding="12,4" Margin="8,0,0,0"/>
-            </Grid>
-        </Border>
-
-        <!-- Блок с итогами по разделам -->
-        <Border Grid.Row="2"
-                Background="{StaticResource SummaryBackgroundBrush}"
-                CornerRadius="6"
-                Padding="6"
-                Margin="12,0"
-                BorderBrush="{StaticResource BorderBrush}"
-                BorderThickness="1">
-            <StackPanel>
-                <!-- Заголовки столбцов -->
-                <Grid Margin="0,0,0,5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="250"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBox Grid.Column="0"
-                 Text="Раздел"
-                 Style="{StaticResource SummaryTextStyleBox}"
-                 FontWeight="Bold"
-                 BorderThickness="0"
-                 Background="Transparent"
-                 IsReadOnly="True"
-                 Focusable="False"/>
-
-                    <TextBox Grid.Column="2"
-                 Text="Сумма"
-                 Style="{StaticResource SummaryValueStyleBox}"
-                 FontWeight="Bold"
-                 BorderThickness="0"
-                 Background="Transparent"
-                 IsReadOnly="True"
-                 Focusable="False"/>
-                </Grid>
-
-                <!-- Итоги по разделам -->
-                <ItemsControl ItemsSource="{Binding Sections}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="0,2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="250"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-
-                                <TextBox Grid.Column="0"
-                             Text="{Binding Name, Mode=OneWay, StringFormat='{}{0}'}" 
-                             Style="{StaticResource SummaryTextStyleBox}"
-                             BorderThickness="0"
-                             Background="Transparent"
-                             IsReadOnly="True"
-                             />
-
-                                <TextBox Grid.Column="2"
-                             Text="{Binding SectionTotalSum, Mode=OneWay, StringFormat=' {0:C}'}" 
-                             Style="{StaticResource SummaryValueStyleBox}"
+                                    <TextBox Grid.Column="2"
+                                 Text="{Binding SectionTotalSum, Mode=OneWay, StringFormat=' {0:C}'}" 
+                                 Style="{StaticResource SummaryValueStyleBox}"
                          
-                             BorderThickness="0"
-                             Background="Transparent"
-                             IsReadOnly="True"
-                             />
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                                 BorderThickness="0"
+                                 Background="Transparent"
+                                 IsReadOnly="True"
+                                 />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
 
-                <Grid Margin="0,2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="250"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+                    <Grid Margin="0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="250"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-                    <TextBox Grid.Column="0"
-                          Text="Накладные расходы" 
-                          Style="{StaticResource SummaryTextStyleBox}"
-                          BorderThickness="0"
-                          Background="Transparent"
-                          IsReadOnly="True"
-                          />
+                        <TextBox Grid.Column="0"
+                              Text="Накладные расходы" 
+                              Style="{StaticResource SummaryTextStyleBox}"
+                              BorderThickness="0"
+                              Background="Transparent"
+                              IsReadOnly="True"
+                              />
 
-                    <TextBox x:Name="CostTextBox"
-                      Grid.Column="1"
-                      Text="{Binding Costs,Mode= TwoWay, StringFormat=' {0:C}', UpdateSourceTrigger=PropertyChanged}" 
-                      Style="{StaticResource SummaryValueStyleBox}"
-                    />
-
-                    <TextBox Grid.Column="2"
-                          Text="{Binding CostsReal, Mode=TwoWay, StringFormat='{}({0:C})'}" 
+                        <TextBox x:Name="CostTextBox"
+                          Grid.Column="1"
+                          Text="{Binding Costs,Mode= TwoWay, StringFormat=' {0:C}', UpdateSourceTrigger=PropertyChanged}" 
                           Style="{StaticResource SummaryValueStyleBox}"
-                          BorderThickness="0"
-                          Background="Transparent"
-                          ToolTip="{Binding CostsTooltip}"
-                          IsReadOnly="True"
-                          PreviewMouseLeftButtonUp="TextBox_MouseLeftButtonUp"
-                          Cursor="Hand"
-                    />
-                </Grid>
+                        />
+
+                        <TextBox Grid.Column="2"
+                              Text="{Binding CostsReal, Mode=TwoWay, StringFormat='{}({0:C})'}" 
+                              Style="{StaticResource SummaryValueStyleBox}"
+                              BorderThickness="0"
+                              Background="Transparent"
+                              ToolTip="{Binding CostsTooltip}"
+                              IsReadOnly="True"
+                              PreviewMouseLeftButtonUp="TextBox_MouseLeftButtonUp"
+                              Cursor="Hand"
+                        />
+                    </Grid>
 
 
-                <!-- Разделительная линия -->
-                <Rectangle Height="1" Fill="{StaticResource BorderBrush}" Margin="0,5,0,5"/>
+                    <!-- Разделительная линия -->
+                    <Rectangle Height="1" Fill="{StaticResource BorderBrush}" Margin="0,5,0,5"/>
 
-                <!-- Общая сумма -->
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="250"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                    <!-- Общая сумма -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="250"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-                    <TextBox Grid.Column="0"
-                 Text="Общая сумма:" 
-                 Style="{StaticResource SummaryTextStyleBox}"
-                 Foreground="{StaticResource SuccessBrush}"
-                 FontWeight="Bold"
-                 BorderThickness="0"
-                 Background="Transparent"
-                 IsReadOnly="True"
-                 Focusable="False"/>
+                        <TextBox Grid.Column="0"
+                     Text="Общая сумма:" 
+                     Style="{StaticResource SummaryTextStyleBox}"
+                     Foreground="{StaticResource SuccessBrush}"
+                     FontWeight="Bold"
+                     BorderThickness="0"
+                     Background="Transparent"
+                     IsReadOnly="True"
+                     Focusable="False"/>
 
-                    <TextBox Grid.Column="2"
-                 Text="{Binding TotalSum, StringFormat=' {0:C}'}" 
-                 Style="{StaticResource SummaryValueStyleBox}"
-                 Foreground="{StaticResource SuccessBrush}"
-                 FontWeight="Bold"
+                        <TextBox Grid.Column="2"
+                     Text="{Binding TotalSum, StringFormat=' {0:C}'}" 
+                     Style="{StaticResource SummaryValueStyleBox}"
+                     Foreground="{StaticResource SuccessBrush}"
+                     FontWeight="Bold"
                 
-                 BorderThickness="0"
-                 Background="Transparent"
-                 IsReadOnly="True"
-                 Focusable="False"/>
-                </Grid>
-            </StackPanel>
-        </Border>
+                     BorderThickness="0"
+                     Background="Transparent"
+                     IsReadOnly="True"
+                     Focusable="False"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
 
-        <!-- Таблица с позициями -->
-        <Border Grid.Row="3"
-                Background="White"
-                CornerRadius="6"
-                Margin="12,6"
-                BorderBrush="{StaticResource BorderBrush}"
-                BorderThickness="0">
+            <!-- Таблица с позициями -->
+            <Border Grid.Row="3"
+                    Background="White"
+                    CornerRadius="6"
+                    Margin="12,6"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="0">
 
-            <TabControl x:Name="MainTabControl" 
-                        ItemsSource="{Binding Sections}"
-                        SelectedIndex="0">
+                <TabControl x:Name="MainTabControl" 
+                            ItemsSource="{Binding Sections}"
+                            SelectedIndex="0">
 
-                <TabControl.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Name, FallbackValue='Без названия'}" Margin="5"/>
-                    </DataTemplate>
-                </TabControl.ItemTemplate>
+                    <TabControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name, FallbackValue='Без названия'}" Margin="5"/>
+                        </DataTemplate>
+                    </TabControl.ItemTemplate>
 
-                <TabControl.ContentTemplate>
-                    <DataTemplate>
-                        <DockPanel>
-                            <!-- Панель управления с кнопками и информацией -->
-                            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="10,10,10,5" VerticalAlignment="Center">
-                                <Button Content="Добавить позицию" 
-                                        Style="{StaticResource SmallButton}"
-                                        Command="{Binding AddPositionCommand}"/>
+                    <TabControl.ContentTemplate>
+                        <DataTemplate>
+                            <DockPanel>
+                                <!-- Панель управления с кнопками и информацией -->
+                                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="10,10,10,5" VerticalAlignment="Center">
+                                    <Button Content="Добавить позицию" 
+                                            Style="{StaticResource SmallButton}"
+                                            Command="{Binding AddPositionCommand}"/>
 
-                                <Button Content="Удалить позицию" 
-                                        Style="{StaticResource DangerButton}"
-                                        Command="{Binding RemovePositionCommand}"
-                                        Margin="8,0,0,0"/>
+                                    <Button Content="Удалить позицию" 
+                                            Style="{StaticResource DangerButton}"
+                                            Command="{Binding RemovePositionCommand}"
+                                            Margin="8,0,0,0"/>
 
-                                <!-- Информация о позициях и сумме -->
-                                <StackPanel Orientation="Horizontal" Margin="20,0,0,0" VerticalAlignment="Center" >
-                                    <TextBlock Text="{Binding PositionsCount, StringFormat='Позиций: {0}'}" 
-                                               Style="{StaticResource SummaryTextStyle}"/>
+                                    <!-- Информация о позициях и сумме -->
+                                    <StackPanel Orientation="Horizontal" Margin="20,0,0,0" VerticalAlignment="Center" >
+                                        <TextBlock Text="{Binding PositionsCount, StringFormat='Позиций: {0}'}" 
+                                                   Style="{StaticResource SummaryTextStyle}"/>
 
-                                    <TextBlock Text="{Binding SectionTotalSum, StringFormat='Сумма: {0:C}', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                                               Style="{StaticResource SummaryValueStyle}"
-                                               Foreground="{StaticResource SuccessBrush}" Margin="30,0,0,0"/>
+                                        <TextBlock Text="{Binding SectionTotalSum, StringFormat='Сумма: {0:C}', Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                   Style="{StaticResource SummaryValueStyle}"
+                                                   Foreground="{StaticResource SuccessBrush}" Margin="30,0,0,0"/>
+                                    </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
 
-                            <!-- Таблица -->
-                            <DataGrid ItemsSource="{Binding Positions}"
-                                     AutoGenerateColumns="False"
-                                     Style="{StaticResource ModernDataGrid2}"
-                                     ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle2}"
-                                     CellStyle="{StaticResource DataGridCellStyle2}"
-                                     SelectedItem="{Binding SelectedPosition}"
-                                     Name="DataGridPositions"
-                                     KeyUp="DataGridPositions_KeyDown_1"
-                                     PreviewTextInput="DataGridPositions_PreviewTextInput">
+                                <!-- Таблица -->
+                                <DataGrid ItemsSource="{Binding Positions}"
+                                         AutoGenerateColumns="False"
+                                         Style="{StaticResource ModernDataGrid2}"
+                                         ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle2}"
+                                         CellStyle="{StaticResource DataGridCellStyle2}"
+                                         SelectedItem="{Binding SelectedPosition}"
+                                         Name="DataGridPositions"
+                                         KeyUp="DataGridPositions_KeyDown_1"
+                                         PreviewTextInput="DataGridPositions_PreviewTextInput">
 
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="№ п/п" Width="70" Binding="{Binding Number}" IsReadOnly="True">
-                                        <DataGridTextColumn.ElementStyle>
-                                            <Style TargetType="TextBlock">
-                                                <Setter Property="HorizontalAlignment" Value="Center"/>
-                                            </Style>
-                                        </DataGridTextColumn.ElementStyle>
-                                    </DataGridTextColumn>
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="№ п/п" Width="70" Binding="{Binding Number}" IsReadOnly="True">
+                                            <DataGridTextColumn.ElementStyle>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                                </Style>
+                                            </DataGridTextColumn.ElementStyle>
+                                        </DataGridTextColumn>
 
-                                    <DataGridTextColumn Header="Наименование" Width="*" Binding="{Binding Item.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <DataGridTextColumn Header="Наименование" Width="*" Binding="{Binding Item.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                                    <DataGridTemplateColumn Header="Ед.измерения" Width="120">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <ComboBox ItemsSource="{Binding DataContext.AllUnits, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                  DisplayMemberPath="ShortName"
-                                                  SelectedValuePath="Id"
-                                                  SelectedValue="{Binding Unit.Id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Header="Ед.измерения" Width="120">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <ComboBox ItemsSource="{Binding DataContext.AllUnits, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                      DisplayMemberPath="ShortName"
+                                                      SelectedValuePath="Id"
+                                                      SelectedValue="{Binding Unit.Id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
 
-                                    <DataGridTextColumn Header="Количество" Width="120" 
-                                                       Binding="{Binding Amount, StringFormat=N2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                       ElementStyle="{StaticResource RightAlignedCellStyle}" 
-                                                       EditingElementStyle="{StaticResource RightAlignedEditStyle}"/>
+                                        <DataGridTextColumn Header="Количество" Width="120" 
+                                                           Binding="{Binding Amount, StringFormat=N2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                           ElementStyle="{StaticResource RightAlignedCellStyle}" 
+                                                           EditingElementStyle="{StaticResource RightAlignedEditStyle}"/>
 
-                                    <DataGridTextColumn Header="Цена" Width="140" 
-                                                       Binding="{Binding Price, StringFormat=C, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                       ElementStyle="{StaticResource RightAlignedCellStyle}" 
-                                                       EditingElementStyle="{StaticResource RightAlignedEditStyle}"/>
+                                        <DataGridTextColumn Header="Цена" Width="140" 
+                                                           Binding="{Binding Price, StringFormat=C, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                           ElementStyle="{StaticResource RightAlignedCellStyle}" 
+                                                           EditingElementStyle="{StaticResource RightAlignedEditStyle}"/>
 
-                                    <DataGridTextColumn Header="Сумма" Width="140" 
-                                                       Binding="{Binding TotalSum, StringFormat=C}" 
-                                                       IsReadOnly="True" 
-                                                       ElementStyle="{StaticResource RightAlignedCellStyle}"/>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </DockPanel>
-                    </DataTemplate>
-                </TabControl.ContentTemplate>
-            </TabControl>
-        </Border>
-    </Grid>
+                                        <DataGridTextColumn Header="Сумма" Width="140" 
+                                                           Binding="{Binding TotalSum, StringFormat=C}" 
+                                                           IsReadOnly="True" 
+                                                           ElementStyle="{StaticResource RightAlignedCellStyle}"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </DockPanel>
+                        </DataTemplate>
+                    </TabControl.ContentTemplate>
+                </TabControl>
+            </Border>
+        </Grid>
+    </Border>
 </Window>

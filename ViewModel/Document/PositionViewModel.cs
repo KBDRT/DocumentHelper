@@ -14,7 +14,7 @@ namespace DocumentHelper.ModelView
 
         private ItemViewModel _item = new();
 
-        private UnitViewModel _unit = new();
+        private Unit _unit = new();
 
         public int Id
         {
@@ -88,7 +88,7 @@ namespace DocumentHelper.ModelView
             }
         }
 
-        public UnitViewModel Unit
+        public Unit Unit
         {
             get => _unit;
             set

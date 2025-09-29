@@ -8,24 +8,120 @@
         Title="MainWindow" Height="450" Width="800"
         x:Name="MainShowWindow"
         WindowStyle="None"
+        Language="ru-RU"
         WindowStartupLocation="CenterScreen"
         >
 
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="0" CornerRadius="0" CaptionHeight="0"></WindowChrome>
     </WindowChrome.WindowChrome>
-    
-    
-    <Grid>
 
-        <local:TitleBar x:Name="TitleBar" Title="Документы">
-            
-        </local:TitleBar>
-        
-        <Button Content="Документ" HorizontalAlignment="Left" Margin="29,118,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+    <Border BorderBrush="{StaticResource TextBrush}" 
+            BorderThickness="1"
+            Background="White">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <local:TitleBar x:Name="TitleBar" Grid.Row="0"  Title="Документы">
+
+            </local:TitleBar>
+
+            <Menu VerticalAlignment="Top" Grid.Row="1">
+                <MenuItem Header=" Справочники">
+                    <MenuItem Header="Заказчики" Click="Button_Click_1"></MenuItem>
+                    <MenuItem Header="Единицы измерения" Click="Button_Click_2"></MenuItem>
+                    <MenuItem Header="Услуги и материалы" Click="Button_Click_3"></MenuItem>
+                </MenuItem>
+
+                <MenuItem Header="Документ новый" Click="Button_Click"></MenuItem>
+            </Menu>
+
+
+            <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="12,6,12,0">
+                <GroupBox Header="Фильтрация">
+                    <Grid Cursor="" Margin="0, 4">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Column="0" Content="Номер:" Style="{StaticResource SmallLabelStyle}"/>
+                        <TextBox Grid.Column="1" Height="28" VerticalContentAlignment="Center" Width="100" Text="{Binding Filter.Number}" Cursor=""/>
+
+                        <Label Grid.Column="2" Content="Дата:" Style="{StaticResource SmallLabelStyle}"/>
+                        <DatePicker Grid.Column="3" Style="{StaticResource VerySmallDatePicker}" SelectedDate="{Binding Filter.DateStart}"/>
+                        <DatePicker Grid.Column="4" Style="{StaticResource VerySmallDatePicker}" SelectedDate="{Binding Filter.DateEnd}"/>
+
+                        <Label Grid.Column="5" Content="Организация:" Style="{StaticResource SmallLabelStyle}"/>
+
+                        <!--SelectedItem="{Binding Unit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->
+
+                        <ComboBox 
+                        ItemsSource="{Binding ElementName=DocumentShowWindow, Path=DataContext.AvailableCustomers}"
+                        DisplayMemberPath="FullInfo"
+                        Grid.Column="6" Style="{StaticResource SmallComboBox}"
+                        
+                    />
+
+                        <Button Content="Применить" 
+                        Style="{StaticResource SmallButton}"
+                        Command="{Binding ApplyFilterCommand}" Cursor="Hand"
+                        Grid.Column="7"
+                    />
+
+                        <Button Content="Очистить" 
+                        Style="{StaticResource DangerButton}"
+                        Command="{Binding ClearFilterCommand}" Cursor="Hand"
+                        Grid.Column="8"
+                    />
+
+                    </Grid>
+                </GroupBox>
+            </StackPanel>
+
+
+            <DataGrid ItemsSource="{Binding DocumentsView}"
+          AutoGenerateColumns="False"
+          Style="{StaticResource ModernDataGrid2}"
+          ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle2}"
+          CellStyle="{StaticResource DataGridCellStyle2}"
+          SelectedItem="{Binding SelectedItem}"
+          AlternatingRowBackground="White"
+          HorizontalGridLinesBrush="Transparent"
+          ColumnHeaderHeight="32"
+          Grid.Row="3"
+          Margin="12,10,12,12"
+          MouseDoubleClick="DataGrid_MouseDoubleClick"
+        >
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Номер" Width="*" Binding="{Binding SystemNumber, Mode=OneWay}"/>
+                    <DataGridTextColumn Header="Заказчик" Width="*" Binding="{Binding Customer.FullInfo, Mode=OneWay}"/>
+                    <DataGridTextColumn Header="Дата" Width="*" Binding="{Binding Date, Mode=OneWay, StringFormat=d}"/>
+                    <DataGridTextColumn Header="Итоговая сумма" Width="*" Binding="{Binding TotalSum, Mode=OneWay, StringFormat=C}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+
+            <!--<Button Content="Документ" HorizontalAlignment="Left" Margin="29,118,0,0" VerticalAlignment="Top" Click="Button_Click"/>
         <Button Content="Заказчики" HorizontalAlignment="Left" Margin="277,118,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
         <Button Content="Единицы измерения" HorizontalAlignment="Left" Margin="375,118,0,0" VerticalAlignment="Top" Click="Button_Click_2"/>
         <Button Content="Услуги и материалы" HorizontalAlignment="Left" Margin="518,118,0,0" VerticalAlignment="Top" Click="Button_Click_3"/>
-        <DataGrid ItemsSource="{Binding Documents}" Margin="0,156,0,0" MouseDoubleClick="DataGrid_MouseDoubleClick"/>
-    </Grid>
+        <DataGrid ItemsSource="{Binding Documents}" Margin="0,156,0,0" MouseDoubleClick="DataGrid_MouseDoubleClick"/>-->
+        </Grid>
+    </Border>
 </Window>

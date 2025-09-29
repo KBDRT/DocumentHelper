@@ -46,7 +46,7 @@ namespace DocumentHelper.ModelView
             }
         }
 
-        public int Number
+        public string Number
         {
             get => _document.Number;
             set

@@ -10,19 +10,24 @@ namespace DocumentHelper.ModelView.ReferencesVM
     public abstract partial class ReferencesViewModel<Entity, EntityViewModel> where Entity : Identifier 
                                                                                where EntityViewModel : class, new()
     {
-
+        
+        // репозиторий для работы с бд
         private readonly IRepositoryBase<Entity> _repository = new RepositoryBase<Entity>();
 
+        // непосредственно справочник с данными
         [Notify]        
         protected ObservableCollection<EntityViewModel> _reference { get; set; } = new();
 
+        // выбранный элемент
         public EntityViewModel? SelectedItem { get; set; }
 
+        // команды
         public RelayCommand AddCommand { get; private set; } = null!;
         public RelayCommand RemoveCommand { get; private set; } = null!;
 
         public RelayCommand SaveCommand { get; private set; } = null!;
 
+        // название справочника
         protected string ReferenceName { get; set; } = string.Empty;
 
         public ReferencesViewModel()
@@ -30,7 +35,20 @@ namespace DocumentHelper.ModelView.ReferencesVM
             AddCommand = new RelayCommand(AddCommandHandler);
             RemoveCommand = new RelayCommand(RemoveCommandHandler);
             SaveCommand = new RelayCommand(SaveCommandHandler);
+            FillReference();
 
+            ReferencesManager.ReferenceUpdated += OnCurrentReferenceUpdated;
+        }
+
+        // необходимо реализовать для маппинга между viewmodel сущности и самой сущностью
+        protected abstract EntityViewModel? CreateEntityViewModel(Identifier item);
+
+        protected abstract Entity? CreateEntityFromViewModel(EntityViewModel entityViewModel);
+
+        // логика заполнения справочника в viewmodel
+        protected virtual void FillReference()
+        {
+            Reference.Clear();
             if (ReferencesManager.GetReferenceByType<Entity>() is List<Entity> items)
             {
                 foreach (var item in items)
@@ -44,12 +62,20 @@ namespace DocumentHelper.ModelView.ReferencesVM
             }
         }
 
-        protected abstract EntityViewModel? CreateEntityViewModel(Identifier item);
+        // можно отслеживать изменение в бд справочника
+        private void OnCurrentReferenceUpdated(object sender, string referenceName)
+        {
+            if (referenceName == ReferenceName)
+            {
+                ReferenceUpdated();
+            }
+        }
 
-        protected abstract Entity? CreateEntityFromViewModel(EntityViewModel entityViewModel);
+        // действие при обновлении справоничка в бд
+        protected virtual void ReferenceUpdated() { }
 
-
-        private void AddCommandHandler(object parameter)
+        // реализация комманд
+        protected virtual void AddCommandHandler(object parameter)
         {
             Reference.Add(new EntityViewModel());
         }

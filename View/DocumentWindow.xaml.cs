@@ -29,9 +29,9 @@ namespace DocumentHelper
                 document = (ReferencesManager.GetReferenceByName("Document") as List<Model.Document.Document>).SingleOrDefault(x => x.Id == documentId);   
             }
 
-            DataContext = new DocumentViewModel(document);
+            DataContext = new ModelView.DocumentViewModel(document);
 
-            if (DataContext is DocumentViewModel viewModel)
+            if (DataContext is ModelView.DocumentViewModel viewModel)
             {
                 ListBoxSuggest.ItemsSource = viewModel.AllItems;
             }
@@ -39,7 +39,7 @@ namespace DocumentHelper
 
         private void TextBox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (DataContext is DocumentViewModel viewModel)
+            if (DataContext is ModelView.DocumentViewModel viewModel)
             {
                 viewModel.Costs = viewModel.CostsReal;
                 viewModel.RecalsCosts();
@@ -90,7 +90,7 @@ namespace DocumentHelper
                         Id = selectedItem.Id,
                     };
 
-                    _currentPosition.Unit = new UnitViewModel()
+                    _currentPosition.Unit = new Unit()
                     {
                         ShortName = selectedItem?.Unit?.ShortName,
                         Id = (int)selectedItem?.Unit?.Id,
