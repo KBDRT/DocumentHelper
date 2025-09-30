@@ -1,14 +1,18 @@
-﻿using DocumentHelper.Model;
+﻿using DocumentHelper.Infrastructure.Files;
+using DocumentHelper.Model;
 using DocumentHelper.Model.Document;
 using DocumentHelper.Model.Reference;
-using DocumentHelper.Services;
 using DocumentHelper.Services.Database;
 using DocumentHelper.Services.DataServices;
 using DocumentHelper.Services.Mapping;
+using DocumentHelper.Services.Validation;
+using DocumentHelper.View.Validation;
 using DocumentHelper.ViewModel.Commands;
+using FluentValidation.Results;
 using PropertyChanged.SourceGenerator;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DocumentHelper.ModelView
 {
@@ -26,6 +30,7 @@ namespace DocumentHelper.ModelView
 
         public ObservableCollection<Unit> AllUnits { get; set; } = new();
 
+        private SaveDocumentValidator validator = new SaveDocumentValidator();
 
         [Notify]
         private double _costsReal;
@@ -43,6 +48,19 @@ namespace DocumentHelper.ModelView
                 return $"Сумма по разделам: {totalSum:N2} ₽\n" +
                        $"Ставка: {procent}%\n" +
                        $"Итого: {CostsReal:N2} ₽";
+            }
+        }
+
+        public Customer Customer
+        {
+            get => _document?.Customer;
+            set
+            {
+                if (_document.Customer != value)
+                {
+                    _document.Customer = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs(nameof(Customer)));
+                }
             }
         }
 
@@ -119,7 +137,7 @@ namespace DocumentHelper.ModelView
 
             if (document == null)
             {
-                _document = new() { DatePeriod = new() { DateStart = DateTime.Now, DateEnd = DateTime.Now } };
+                _document = new() { Customer = new(), DatePeriod = new() { DateStart = DateTime.Now, DateEnd = DateTime.Now } };
 
                 if (sections != null)
                 {
@@ -188,6 +206,7 @@ namespace DocumentHelper.ModelView
             }
 
             SaveCommand = new(SaveCommandHandler);
+            CreateFileCommand = new(CreateFileCommandHandler);
             RecalsCosts();
         }
 
@@ -207,20 +226,35 @@ namespace DocumentHelper.ModelView
         public async void SaveCommandHandler(object parameter)
         {
             _document.Positions.Clear();
+            if (_document.Customer != null)
+            {
+                _document.CustomerId = _document.Customer.Id;
+            }
+            _document.Customer = null;
+
             foreach (var section in Sections)
             {
                 foreach(var position in section.Positions)
                 {
                     var item = position.Item.GetItem();
-                    item.SectionId = section.Id;
-                    item.UnitId = position.Unit.Id;
-
                     var itemId = item.Id;
 
-                    if (item.Id != 0)
+                    var itemFromRef = AllItems.FirstOrDefault(x => x.Name == item.Name);
+                    if (itemFromRef != null)
                     {
+                        itemId = itemFromRef.Id;
                         item = null;
-                        //item.UnitId = item.Unit.Id;
+                    }
+                    else
+                    {
+                        item = new()
+                        {
+                            SectionId = section.Id,
+                            UnitId = position.Unit.Id,
+                            Name = item.Name,
+                            Id = 0
+                        };
+                        itemId = 0;
                     }
 
                     _document.Positions.Add(new()
@@ -237,11 +271,28 @@ namespace DocumentHelper.ModelView
                 }
             }
 
+            if (!ValidatorsService.ValidateWithWindow(_document))
+            {
+                return;
+            }
+
             await _repository.SaveDocument(_document);
+
             ReferencesManager.SelectReferenceByName("Document");
             ReferencesManager.SelectReferenceByName("Item");
+
+            _document = (ReferencesManager.GetReferenceByName("Document") as List<Document>).SingleOrDefault(x => x.Id == _document.Id);
         }
 
+
+        public RelayCommand CreateFileCommand { get; private set; }
+
+        public void CreateFileCommandHandler(object parameter)
+        {
+            ExcelKS2Filler ExcelFiller = new ExcelKS2Filler("template.xlsx", "New.xlsx", _document);
+
+            ExcelFiller.ProcessFile();
+        }
 
     }
 }

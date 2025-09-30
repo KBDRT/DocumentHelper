@@ -31,17 +31,17 @@ namespace DocumentHelper
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            new CustomersView().Show();
+            new DocumentHelper.View.References.CustomersView().Show();
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            new UnitView().Show();
+            new DocumentHelper.View.References.UnitView().Show();
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            new ItemsView().Show();
+            new DocumentHelper.View.References.ItemsView().Show();
         }
 
         private void DataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)

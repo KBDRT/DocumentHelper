@@ -16,7 +16,9 @@ namespace DocumentHelper.ViewModel.References.Documents
         public double TotalSum => _document.TotalSum; 
         public DateTime Date { get => _document.Date; set => SetValueProperty(value, v => _document.Date = v); }
 
-        public Customer Customer { get => _document?.Customer; set => SetValueProperty(value, v => _document.Customer = v); }
+        public Customer Customer { get => _document.Customer; set => SetValueProperty(value, v => _document.Customer = v); }
+
+        public string CustomerName { get => Customer?.Name; }
 
         public DocumentDates DatePeriod { get => _document?.DatePeriod; set => SetValueProperty(value, v => _document.DatePeriod = v); }
 

@@ -2,6 +2,7 @@
 using DocumentHelper.Services;
 using DocumentHelper.Services.Database;
 using DocumentHelper.Services.DataServices;
+using DocumentHelper.Services.Validation;
 using DocumentHelper.ViewModel.Commands;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -63,15 +64,14 @@ namespace DocumentHelper.ModelView
                 }
             }
 
-            if (items.Any(x => x.Unit == null))
+            try
             {
-                MessageBox.Show("Ошибка сохранения!\nНе у всех позиций указана единица измерения!", 
-                    "Ошибка", 
-                    MessageBoxButton.OK, 
-                    MessageBoxImage.Error
-                );
+                if (!ValidatorsService.ValidateWithWindow(items))
+                    return;
+            }
+            catch
+            {
 
-                return;
             }
 
             await _repository.SaveItems(items);

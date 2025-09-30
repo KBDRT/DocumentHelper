@@ -66,16 +66,15 @@
                         <DatePicker Grid.Column="3" Style="{StaticResource VerySmallDatePicker}" SelectedDate="{Binding Filter.DateStart}"/>
                         <DatePicker Grid.Column="4" Style="{StaticResource VerySmallDatePicker}" SelectedDate="{Binding Filter.DateEnd}"/>
 
-                        <Label Grid.Column="5" Content="Организация:" Style="{StaticResource SmallLabelStyle}"/>
+                        <!--<Label Grid.Column="5" Content="Организация:" Style="{StaticResource SmallLabelStyle}"/>-->
 
                         <!--SelectedItem="{Binding Unit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->
 
-                        <ComboBox 
+                        <!--<ComboBox 
                         ItemsSource="{Binding ElementName=DocumentShowWindow, Path=DataContext.AvailableCustomers}"
                         DisplayMemberPath="FullInfo"
                         Grid.Column="6" Style="{StaticResource SmallComboBox}"
-                        
-                    />
+                        />-->
 
                         <Button Content="Применить" 
                         Style="{StaticResource SmallButton}"
@@ -109,8 +108,8 @@
         >
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Номер" Width="*" Binding="{Binding SystemNumber, Mode=OneWay}"/>
-                    <DataGridTextColumn Header="Заказчик" Width="*" Binding="{Binding Customer.FullInfo, Mode=OneWay}"/>
+                    <DataGridTextColumn Header="Номер" Width="*" Binding="{Binding Number, Mode=OneWay}"/>
+                    <DataGridTextColumn Header="Заказчик" Width="*" Binding="{Binding CustomerName, Mode=OneWay}"/>
                     <DataGridTextColumn Header="Дата" Width="*" Binding="{Binding Date, Mode=OneWay, StringFormat=d}"/>
                     <DataGridTextColumn Header="Итоговая сумма" Width="*" Binding="{Binding TotalSum, Mode=OneWay, StringFormat=C}"/>
                 </DataGrid.Columns>

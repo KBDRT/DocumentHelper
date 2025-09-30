@@ -29,9 +29,9 @@ namespace DocumentHelper
                 document = (ReferencesManager.GetReferenceByName("Document") as List<Model.Document.Document>).SingleOrDefault(x => x.Id == documentId);   
             }
 
-            DataContext = new ModelView.DocumentViewModel(document);
+            DataContext = new DocumentViewModel(document);
 
-            if (DataContext is ModelView.DocumentViewModel viewModel)
+            if (DataContext is DocumentViewModel viewModel)
             {
                 ListBoxSuggest.ItemsSource = viewModel.AllItems;
             }

@@ -79,9 +79,10 @@
                     <Label Grid.Column="4" Content="Организация:" Style="{StaticResource SmallLabelStyle}"/>
 
                     <ComboBox 
-                        SelectedItem="{Binding Unit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        SelectedValue="{Binding Customer.Id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         ItemsSource="{Binding ElementName=DocumentShowWindow, Path=DataContext.AvailableCustomers}"
-                        DisplayMemberPath="FullInfo"
+                        DisplayMemberPath="Name"
+                        SelectedValuePath="Id"
                         Grid.Column="5" Style="{StaticResource SmallComboBox}"/>
 
                     <Label Grid.Column="6" Content="Начало:" Style="{StaticResource SmallLabelStyle}"/>
@@ -91,7 +92,7 @@
                     <DatePicker Grid.Column="9" Style="{StaticResource VerySmallDatePicker}" SelectedDate="{Binding DateEnd, Mode=TwoWay}"/>
 
                     <Button Grid.Column="10" Content="Сохранить" Style="{StaticResource SuccessButton}" Height="28" Padding="12,4" Margin="8,0,0,0" Command="{Binding SaveCommand}"/>
-                    <Button Grid.Column="11" Content="Создать файл" Style="{StaticResource PrimaryButton}" Height="28" Padding="12,4" Margin="8,0,0,0"/>
+                    <Button Grid.Column="11" Content="Создать файл" Style="{StaticResource PrimaryButton}" Height="28" Padding="12,4" Margin="8,0,0,0" Command="{Binding CreateFileCommand}"/>
                 </Grid>
             </Border>
 

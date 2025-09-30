@@ -13,6 +13,7 @@ namespace DocumentHelper.Services.References.SpecificReferences
                 .ThenInclude(x => x.Unit)
                 .Include(x => x.Positions)
                 .ThenInclude(x => x.Section)
+                .Include(x => x.Customer)
                 .AsNoTracking().ToList();
         }
     }

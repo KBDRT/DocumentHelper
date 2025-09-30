@@ -75,6 +75,19 @@ namespace DocumentHelper.ModelView
             }
         }
 
+        public Section Section
+        {
+            get => position?.Section;
+            set
+            {
+                if (position.Section != value)
+                {
+                    position.Section = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs(nameof(Section)));
+                }
+            }
+        }
+
         public ItemViewModel Item
         {
             get => _item;

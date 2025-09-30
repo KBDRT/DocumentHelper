@@ -9,11 +9,13 @@ namespace DocumentHelper.Model.Document
 
         public string Number { get; set; } = string.Empty;
 
+        public int CustomerId { get; set; }
+
         public Customer? Customer { get; set; }
 
         public double Costs { get; set; }
 
-        public double TotalSum { get => Positions.Sum(x => x.TotalSum); } 
+        public double TotalSum { get => Positions.Sum(x => x.TotalSum) + Costs; } 
 
         public DateTime Date { get; set; } = DateTime.Now;
 

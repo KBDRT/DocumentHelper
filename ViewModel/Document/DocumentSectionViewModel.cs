@@ -125,7 +125,7 @@ namespace DocumentHelper.ModelView
 
         private void AddPosition(object parameter)
         {
-            Positions.Add(new PositionViewModel() { Number = PositionsCount + 1 });
+            Positions.Add(new PositionViewModel() { Number = PositionsCount + 1, Section = _section });
         }
 
         private void RemovePosition(object parameter)

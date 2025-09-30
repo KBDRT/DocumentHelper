@@ -1,6 +1,7 @@
 ﻿using DocumentHelper.Model;
 using DocumentHelper.Services.Database;
 using DocumentHelper.Services.DataServices;
+using DocumentHelper.Services.Validation;
 using DocumentHelper.ViewModel.Commands;
 using PropertyChanged.SourceGenerator;
 using System.Collections.ObjectModel;
@@ -99,6 +100,17 @@ namespace DocumentHelper.ModelView.ReferencesVM
                 return;
             }
 
+            try
+            {
+                if (!ValidatorsService.ValidateWithWindow(entityList))
+                    return;
+            }
+            catch
+            {
+
+            }
+
+
             await _repository.SaveChangesWithTrackingAsync(entityList);
             ReferencesManager.SelectReferenceByName(ReferenceName);
 
@@ -114,7 +126,6 @@ namespace DocumentHelper.ModelView.ReferencesVM
                     }
                 }
             }
-
         }
     }
 }

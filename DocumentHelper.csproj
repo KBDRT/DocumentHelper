@@ -9,11 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Services\References\ReferencesServices.cs" />
+    <None Include="Services\References\ReferencesManager.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="15.0.1" />
+    <PackageReference Include="ClosedXML" Version="0.105.0" />
+    <PackageReference Include="FluentValidation" Version="12.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.9" />
     <PackageReference Include="PropertyChanged.SourceGenerator" Version="1.1.1">
