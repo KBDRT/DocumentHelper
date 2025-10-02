@@ -6,12 +6,13 @@ namespace DocumentHelper.Model.Reference
     {
         public string Name { get; set; } = string.Empty;
 
-        public Address Address { get; set; } = new();
-
         public DocumentDates DatePeriod { get; set; } = new();
 
+        public string FullInfo => $"{Name}";
 
-        public string FullInfo => $"{Name}, {Address.City}, {Address.Street}, {Address.City}";
+        public List<Address> Addresses { get; set; } = new();
+
+        public List<Contract> Contracts { get; set; } = new();
 
     }
 }

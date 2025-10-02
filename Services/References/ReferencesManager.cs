@@ -13,10 +13,12 @@ namespace DocumentHelper.Services.DataServices
         private static Dictionary<string, IGetReference> _references = new()
         {
             { "Unit", new Reference<Unit>() },
-            { "Customer", new Reference<Customer>() },
+            { "Customer", new CustomerReference() },
             { "Item", new ItemsReference() },
             { "Document", new DocumentsReference() },
             { "Section", new Reference<Section>() },
+            { "Address", new AddressReference() },
+            { "Contract", new ContractReference() },
         };
 
         static ReferencesManager()

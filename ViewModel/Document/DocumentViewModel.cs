@@ -6,12 +6,14 @@ using DocumentHelper.Services.Database;
 using DocumentHelper.Services.DataServices;
 using DocumentHelper.Services.Mapping;
 using DocumentHelper.Services.Validation;
+using DocumentHelper.View.References;
 using DocumentHelper.View.Validation;
 using DocumentHelper.ViewModel.Commands;
 using FluentValidation.Results;
 using PropertyChanged.SourceGenerator;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DocumentHelper.ModelView
@@ -29,8 +31,6 @@ namespace DocumentHelper.ModelView
         public ObservableCollection<Item> AllItems { get; set; } = new();
 
         public ObservableCollection<Unit> AllUnits { get; set; } = new();
-
-        private SaveDocumentValidator validator = new SaveDocumentValidator();
 
         [Notify]
         private double _costsReal;
@@ -60,6 +60,32 @@ namespace DocumentHelper.ModelView
                 {
                     _document.Customer = value;
                     OnPropertyChanged(new PropertyChangedEventArgs(nameof(Customer)));
+                }
+            }
+        }
+
+        public Contract Contract
+        {
+            get => _document?.Contract;
+            set
+            {
+                if (_document.Contract != value)
+                {
+                    _document.Contract = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs(nameof(Contract)));
+                }
+            }
+        }
+
+        public Address Address
+        {
+            get => _document?.Address;
+            set
+            {
+                if (_document.Address != value)
+                {
+                    _document.Address = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs(nameof(Address)));
                 }
             }
         }
@@ -207,6 +233,7 @@ namespace DocumentHelper.ModelView
 
             SaveCommand = new(SaveCommandHandler);
             CreateFileCommand = new(CreateFileCommandHandler);
+            OpenWindowCommand = new(OpenWindowCommandHandler);
             RecalsCosts();
         }
 
@@ -226,12 +253,22 @@ namespace DocumentHelper.ModelView
         public async void SaveCommandHandler(object parameter)
         {
             _document.Positions.Clear();
+
             if (_document.Customer != null)
             {
                 _document.CustomerId = _document.Customer.Id;
             }
-            _document.Customer = null;
 
+            if (_document.Address != null)
+            {
+                _document.AddressId = _document.Address.Id;
+            }
+            
+            if (_document.Contract != null)
+            {
+                _document.ContractId = _document.Contract.Id;
+            }
+            
             foreach (var section in Sections)
             {
                 foreach(var position in section.Positions)
@@ -275,6 +312,10 @@ namespace DocumentHelper.ModelView
             {
                 return;
             }
+            _document.Customer = null;
+            _document.Address = null;
+            _document.Contract = null;
+
 
             await _repository.SaveDocument(_document);
 
@@ -289,10 +330,36 @@ namespace DocumentHelper.ModelView
 
         public void CreateFileCommandHandler(object parameter)
         {
-            ExcelKS2Filler ExcelFiller = new ExcelKS2Filler("template.xlsx", "New.xlsx", _document);
+            string documentDate = _document.Date.ToString("dd-MM-yyyy");
+            var newFileName = $"КС-2/{_document?.Customer?.Name} №{_document?.Number} {documentDate}.xlsx";
+
+            ExcelKS2Filler ExcelFiller = new ExcelKS2Filler("template.xlsx", newFileName, _document);
 
             ExcelFiller.ProcessFile();
         }
+
+        public RelayCommand OpenWindowCommand { get; private set; }
+
+        public void OpenWindowCommandHandler(object parameter)
+        {
+            if (parameter == null) { return; }
+
+            if (_document.Customer?.Id == 0)
+            {
+                MessageBox.Show("Необходимо выбрать заказчика!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (parameter.ToString() == "Address")
+            {
+                new AddressView(_document.Customer, this).ShowDialog();
+            }
+            else if (parameter.ToString() == "Contract")
+            {
+                new ContractsView(_document.Customer, this).ShowDialog();
+            }
+        }
+
 
     }
 }

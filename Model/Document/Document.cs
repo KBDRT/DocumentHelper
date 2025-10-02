@@ -24,5 +24,13 @@ namespace DocumentHelper.Model.Document
         public ObservableCollection<Position> Positions { get; set; } = new();
 
         public DateTime CreatedDate { get; set; } = DateTime.Now;
+
+        public int AddressId { get; set; }
+
+        public Address? Address { get; set; }
+
+        public int ContractId { get; set; }
+
+        public Contract? Contract { get; set; }
     }
 }

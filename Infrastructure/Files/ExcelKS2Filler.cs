@@ -3,6 +3,10 @@ using ClosedXML.Excel;
 using DocumentHelper.Model;
 using DocumentHelper.Model.Document;
 using DocumentHelper.Services.DataServices;
+using System.Diagnostics;
+using System.Diagnostics.Metrics;
+using System.IO;
+using System.Windows;
 
 namespace DocumentHelper.Infrastructure.Files
 {
@@ -11,7 +15,6 @@ namespace DocumentHelper.Infrastructure.Files
         private XLWorkbook _Wbook;
         private IXLWorksheet _FirstSheet;
         private DateOnly _DateTimeSheet;
-
         public ExcelKS2Filler(string TemplateName, string NewFileName, Document info) : base(TemplateName, NewFileName, info)
         {
         }
@@ -29,7 +32,11 @@ namespace DocumentHelper.Infrastructure.Files
             _FirstSheet.Cell(21, "N").Value = _Info.Date.ToString("dd.MM.yyyy");
             _FirstSheet.Cell(21, "O").Value = _Info.DatePeriod.DateStart.ToString("dd.MM.yyyy");
             _FirstSheet.Cell(21, "P").Value = _Info.DatePeriod.DateEnd.ToString("dd.MM.yyyy");
+            _FirstSheet.Cell(13, "C").Value = _Info.Address?.FullAddress;
 
+            _FirstSheet.Cell(15, "N").Value = _Info.Contract?.Number;
+            _FirstSheet.Cell(16, "N").Value = _Info.Contract?.Date.ToString("dd.MM.yyyy");
+            _FirstSheet.Cell(17, "N").Value = _Info.Contract?.Type;
 
             int startRowForSection = 31;
             var RangeToCopy = _FirstSheet.Range(startRowForSection, 1, startRowForSection, _FirstSheet.ColumnCount());
@@ -102,12 +109,6 @@ namespace DocumentHelper.Infrastructure.Files
 
             rowCounter++;
             _FirstSheet.Cell(rowCounter, "J").Value = _Info.TotalSum;
-
-
-            //foreach (var item in _Info.)
-            //{
-
-            //}
         }
 
         protected override void OpenFile()
@@ -118,7 +119,53 @@ namespace DocumentHelper.Infrastructure.Files
 
         protected override void SaveFile()
         {
-            _Wbook.SaveAs(_NewFileName);
+            try
+            {
+                string directory = Path.GetDirectoryName(_NewFileName);
+                string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(_NewFileName);
+                string extension = Path.GetExtension(_NewFileName);
+
+                string newFilePath = _NewFileName;
+
+                if (File.Exists(newFilePath))
+                {
+                    string timestamp = DateTime.Now.ToString("ddMMyyyy_HHmmss");
+                    newFilePath = Path.Combine(directory, $"{fileNameWithoutExtension} ({timestamp}){extension}");
+                }
+
+                _Wbook.SaveAs(newFilePath);
+
+                MessageBoxResult result = MessageBox.Show(
+                   $"Файл успешно сохранен:\n{newFilePath}\n\nХотите открыть файл?",
+                   "Сохранение завершено",
+                   MessageBoxButton.YesNo,
+                   MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    OpenFile(newFilePath);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Не удалось сохранить файл файл:\n{ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Stop);
+            }
+        }
+
+        private void OpenFile(string filePath)
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = filePath,
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Не удалось открыть файл:\n{ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Stop);
+            }
         }
     }
 }

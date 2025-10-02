@@ -60,6 +60,8 @@ namespace DocumentHelper
                 return;
             }
 
+            ListBoxSuggest.SelectedItem = null;
+
             var currentCell = grid.GetCurrentCell();
             if (currentCell?.Content is TextBox textBox)
             {
@@ -116,7 +118,10 @@ namespace DocumentHelper
 
             if (string.IsNullOrWhiteSpace(_currentFilter))
             {
-                ListBoxSuggest.Items.Filter = null;
+                var section = MainTabControl.SelectedValue as DocumentSectionViewModel;
+
+                ListBoxSuggest.Items.Filter = item => item is Item dataItem
+                              && dataItem.Section.Id == section.Section.Id;
             }
             else
             {
@@ -127,7 +132,7 @@ namespace DocumentHelper
                                && dataItem.Section.Id == section.Section.Id;
             }
 
-            if (ListBoxSuggest.Items.Count > 0 && !string.IsNullOrWhiteSpace(_currentFilter))
+            if (ListBoxSuggest.Items.Count > 0)
             {
                 if (_prevPopupRowIndex != currentRowIndex || !PopupSuggest.IsOpen)
                 {

@@ -15,11 +15,8 @@ namespace DocumentHelper.ViewModel.References.Customers
 
         public DateTime DateEnd { get => _customer.DatePeriod.DateEnd; set => SetValueProperty(value, v => _customer.DatePeriod.DateEnd = v); }
 
-        public string City { get => _customer.Address.City; set => SetValueProperty(value, v => _customer.Address.City = v); }
 
-        public string House { get => _customer.Address.House; set => SetValueProperty(value, v => _customer.Address.House = v); }
-
-        public string Street { get => _customer.Address.Street; set => SetValueProperty(value, v => _customer.Address.Street = v); }
+        public Customer GetCustomer => _customer;
 
     }
 }

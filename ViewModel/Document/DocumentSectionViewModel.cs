@@ -1,15 +1,18 @@
 ﻿using DocumentHelper.Model;
 using DocumentHelper.Model.Document;
+using DocumentHelper.Services.Database;
+using DocumentHelper.ViewModel.Commands;
+using PropertyChanged.SourceGenerator;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using PropertyChanged.SourceGenerator;
-using DocumentHelper.ViewModel.Commands;
+using System.Windows;
 
 namespace DocumentHelper.ModelView
 {
     public partial class DocumentSectionViewModel
     {
+
         [Notify]
         private Section? _section = null!;
 
@@ -132,8 +135,17 @@ namespace DocumentHelper.ModelView
         {
             if (SelectedPosition is not null)
             {
-                Positions.Remove(SelectedPosition);
-                SelectedPosition = null;
+                MessageBoxResult result = MessageBox.Show(
+                "Вы уверены, что хотите удалить данную позицию?",
+                "Подтверждение",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    Positions.Remove(SelectedPosition); 
+                    SelectedPosition = null;
+                }
             }
 
             int counter = 1;

@@ -5,6 +5,7 @@ using DocumentHelper.Services.Validation;
 using DocumentHelper.ViewModel.Commands;
 using PropertyChanged.SourceGenerator;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace DocumentHelper.ModelView.ReferencesVM
 {
@@ -13,7 +14,7 @@ namespace DocumentHelper.ModelView.ReferencesVM
     {
         
         // репозиторий для работы с бд
-        private readonly IRepositoryBase<Entity> _repository = new RepositoryBase<Entity>();
+        protected readonly IRepositoryBase<Entity> _repository = new RepositoryBase<Entity>();
 
         // непосредственно справочник с данными
         [Notify]        
@@ -81,12 +82,22 @@ namespace DocumentHelper.ModelView.ReferencesVM
             Reference.Add(new EntityViewModel());
         }
 
-        private void RemoveCommandHandler(object parameter)
+        protected virtual void RemoveCommandHandler(object parameter)
         {
             if (SelectedItem is not null)
             {
-                Reference.Remove(SelectedItem);
-                SelectedItem = null;
+                if (CheckDependent())
+                {
+                    Reference.Remove(SelectedItem);
+                    SelectedItem = null;
+                }
+                else
+                {
+                    MessageBox.Show("Удаление невозможно, есть зависимые данные!",
+                                    "Ошибка",
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Stop);
+                }
             }
             else
                 return; 
@@ -110,22 +121,35 @@ namespace DocumentHelper.ModelView.ReferencesVM
 
             }
 
-
+            ActionBeforeSave(entityList);
             await _repository.SaveChangesWithTrackingAsync(entityList);
             ReferencesManager.SelectReferenceByName(ReferenceName);
 
             Reference.Clear();
-            foreach (var item in entityList)
+            if (ReferencesManager.GetReferenceByName(ReferenceName) is List<Entity> entities)
             {
-                if (item != null)
+                foreach (var item in entities)
                 {
-                    var entityItem = CreateEntityViewModel(item);
-                    if (entityItem != null)
+                    if (item != null)
                     {
-                        Reference.Add(entityItem);
+                        var entityItem = CreateEntityViewModel(item);
+                        if (entityItem != null)
+                        {
+                            Reference.Add(entityItem);
+                        }
                     }
                 }
             }
+        }
+
+        protected virtual bool CheckDependent()
+        {
+            return true;
+        }
+
+        protected virtual void ActionBeforeSave(List<Entity?> entityList)
+        {
+
         }
     }
 }

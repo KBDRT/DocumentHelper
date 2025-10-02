@@ -1,6 +1,8 @@
 ﻿using DocumentHelper.Model;
+using DocumentHelper.Model.Document;
 using DocumentHelper.Model.Reference;
 using DocumentHelper.ModelView.ReferencesVM;
+using DocumentHelper.Services.DataServices;
 
 namespace DocumentHelper.ViewModel.References.Customers
 {
@@ -24,12 +26,12 @@ namespace DocumentHelper.ViewModel.References.Customers
                         DateStart = customer.DateStart,
                         DateEnd = customer.DateEnd,
                     },
-                    Address = new()
-                    {
-                        City = customer.City,
-                        House = customer.House,
-                        Street = customer.Street,
-                    }
+                    //Address = new()
+                    //{
+                    //    City = customer.City,
+                    //    House = customer.House,
+                    //    Street = customer.Street,
+                    //}
                 };
             }
 
@@ -44,15 +46,25 @@ namespace DocumentHelper.ViewModel.References.Customers
                 {
                     Id = customer.Id,
                     Name = customer.Name,
-                    City = customer.Address.City,
-                    Street = customer.Address.Street,
-                    House = customer.Address.House,
+                    //City = customer.Address.City,
+                    //Street = customer.Address.Street,
+                    //House = customer.Address.House,
                     DateStart = customer.DatePeriod.DateStart,
                     DateEnd = customer.DatePeriod.DateEnd,
                 };
             }
 
             return null;
+        }
+
+        protected override bool CheckDependent()
+        {
+            if (SelectedItem != null && ReferencesManager.GetReferenceByName("Document") is List<Document> documents)
+            {
+                return !documents.Any(x => x.CustomerId == SelectedItem.Id);
+            }
+
+            return true;
         }
     }
 }

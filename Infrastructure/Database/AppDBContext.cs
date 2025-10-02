@@ -18,6 +18,10 @@ namespace DocumentHelper.Infrastructure.Database
 
         public DbSet<Item> Items { get; set; } = null!;
 
+        public DbSet<Address> Addresses { get; set; } = null!;
+
+        public DbSet<Contract> Contracts { get; set; } = null!;
+
         public AppDBContext()
         {
             Database.EnsureCreated();
@@ -37,12 +41,12 @@ namespace DocumentHelper.Infrastructure.Database
         {
             modelBuilder.Entity<Customer>(entity =>
             {
-                entity.OwnsOne(e => e.Address, address =>
-                {
-                    address.Property(a => a.City).HasColumnName("City");
-                    address.Property(a => a.Street).HasColumnName("Street");
-                    address.Property(a => a.House).HasColumnName("House");
-                });
+                //entity.OwnsOne(e => e.Address, address =>
+                //{
+                //    address.Property(a => a.City).HasColumnName("City");
+                //    address.Property(a => a.Street).HasColumnName("Street");
+                //    address.Property(a => a.House).HasColumnName("House");
+                //});
 
                 entity.OwnsOne(e => e.DatePeriod, period =>
                 {

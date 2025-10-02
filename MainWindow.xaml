@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DocumentHelper"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="MainWindow" Height="650" Width="800"
         x:Name="MainShowWindow"
         WindowStyle="None"
         Language="ru-RU"
@@ -37,8 +37,10 @@
                     <MenuItem Header="Единицы измерения" Click="Button_Click_2"></MenuItem>
                     <MenuItem Header="Услуги и материалы" Click="Button_Click_3"></MenuItem>
                 </MenuItem>
-
+                <Separator />
                 <MenuItem Header="Документ новый" Click="Button_Click"></MenuItem>
+                <Separator />
+                <MenuItem Header="Удалить документ" Command="{Binding RemoveCommand}"></MenuItem>
             </Menu>
 
 
@@ -115,12 +117,6 @@
                 </DataGrid.Columns>
             </DataGrid>
 
-
-            <!--<Button Content="Документ" HorizontalAlignment="Left" Margin="29,118,0,0" VerticalAlignment="Top" Click="Button_Click"/>
-        <Button Content="Заказчики" HorizontalAlignment="Left" Margin="277,118,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
-        <Button Content="Единицы измерения" HorizontalAlignment="Left" Margin="375,118,0,0" VerticalAlignment="Top" Click="Button_Click_2"/>
-        <Button Content="Услуги и материалы" HorizontalAlignment="Left" Margin="518,118,0,0" VerticalAlignment="Top" Click="Button_Click_3"/>
-        <DataGrid ItemsSource="{Binding Documents}" Margin="0,156,0,0" MouseDoubleClick="DataGrid_MouseDoubleClick"/>-->
         </Grid>
     </Border>
 </Window>

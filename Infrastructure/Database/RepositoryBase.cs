@@ -3,8 +3,6 @@ using DocumentHelper.Infrastructure.Database;
 using DocumentHelper.Model;
 using DocumentHelper.Model.Document;
 using Microsoft.EntityFrameworkCore;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DocumentHelper.Services.Database
 {
@@ -152,6 +150,15 @@ namespace DocumentHelper.Services.Database
 
             await context.Documents.AddAsync(document);
             await context.SaveChangesAsync();
+        }
+
+        public async Task DeleteById(int entityId)
+        {
+            using var context = new AppDBContext();
+
+            await context.Set<TEntity>()
+                          .Where(x => x.Id == entityId)
+                          .ExecuteDeleteAsync();
         }
     }
 }

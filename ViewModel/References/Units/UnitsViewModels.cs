@@ -1,5 +1,6 @@
 ﻿using DocumentHelper.Model;
 using DocumentHelper.ModelView.ReferencesVM;
+using DocumentHelper.Services.DataServices;
 
 namespace DocumentHelper.ViewModel.References.Units
 {
@@ -40,6 +41,16 @@ namespace DocumentHelper.ViewModel.References.Units
             }
 
             return null;
+        }
+
+        protected override bool CheckDependent()
+        {
+            if (SelectedItem != null && ReferencesManager.GetReferenceByName("Item") is List<Item> items)
+            {
+                return !items.Any(x => x.UnitId == SelectedItem.Id);
+            }
+
+            return true;
         }
     }
 }

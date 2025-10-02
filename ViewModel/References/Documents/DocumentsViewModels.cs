@@ -1,9 +1,11 @@
 ﻿using DocumentHelper.Model;
 using DocumentHelper.Model.Document;
 using DocumentHelper.ModelView.ReferencesVM;
+using DocumentHelper.Services.DataServices;
 using DocumentHelper.ViewModel.Commands;
 using System;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Data;
 
 namespace DocumentHelper.ViewModel.References.Documents
@@ -73,6 +75,27 @@ namespace DocumentHelper.ViewModel.References.Documents
         {
             Filter.Clear();
             DocumentsView.Refresh();
+        }
+
+        protected async override void RemoveCommandHandler(object parameter)
+        {
+            if (SelectedItem != null)
+            {
+                MessageBoxResult result = MessageBox.Show(
+                   "Вы уверены, что хотите удалить данный документ?",
+                   "Подтверждение",
+                   MessageBoxButton.YesNo,
+                   MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    await _repository.DeleteById(SelectedItem.Id);
+                    Reference.Remove(SelectedItem);
+                    SelectedItem = null;
+
+                    ReferencesManager.SelectReferenceByName("Document");
+                }
+            }
         }
 
     }
