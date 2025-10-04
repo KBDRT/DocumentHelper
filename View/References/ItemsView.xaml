@@ -20,7 +20,7 @@
     <Border BorderBrush="{StaticResource TextBrush}" 
         BorderThickness="1"
         Background="White">
-        <Grid>
+        <Grid Cursor="">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -32,11 +32,19 @@
 
             </local:TitleBar>
 
+            <Menu VerticalAlignment="Top" Grid.Row="1" Cursor="">
+                <MenuItem Header="Сохранить" Margin="10,0,0,0" Command="{Binding SaveCommand}" Style="{StaticResource CenteredMenuItem}">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="16" VerticalAlignment="Center"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </Menu>
+
             <!-- Таблица с позициями -->
             <Border Grid.Row="2"
              Background="White"
              CornerRadius="6"
-             Margin="12,0"
+             Margin="12,0,12,0"
              BorderBrush="{StaticResource BorderBrush}"
              BorderThickness="0" Cursor="">
 
@@ -49,13 +57,13 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <!-- Левая группа кнопок -->
+                        <!-- Левая группа кнопок --><!--
                         <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Cursor="">
                             <Button Content="Сохранить" 
                                 Style="{StaticResource SuccessButton}"
                                 Command="{Binding SaveCommand}" Cursor="Hand"
                             />
-                        </StackPanel>
+                        </StackPanel>-->
                     </Grid>
 
                     <TabControl x:Name="MainTabControl" 
@@ -72,18 +80,18 @@
                         <TabControl.ContentTemplate>
                             <DataTemplate>
                                 <DockPanel>
-                                    <Grid DockPanel.Dock="Top" Margin="10,0,10,5">
+                                    <Grid DockPanel.Dock="Top" Margin="10,10,10,5">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
-                                        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                                            <Button Content="Добавить единицу" 
+                                        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Cursor="">
+                                            <Button Content="Добавить" 
                                             Style="{StaticResource SmallButton}"
                                             Command="{Binding AddCommand}"/>
 
-                                            <Button Content="Удалить единицу" 
+                                            <Button Content="Удалить" 
                                             Style="{StaticResource DangerButton}"
                                             Command="{Binding RemoveCommand}"
                                             Margin="8,0,0,0" Cursor="Hand"/>

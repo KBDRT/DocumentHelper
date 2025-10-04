@@ -31,17 +31,37 @@
 
             </local:TitleBar>
 
+            <Menu VerticalAlignment="Top" Grid.Row="1" Cursor="">
+                <MenuItem Header="Сохранить" Margin="10,0,0,0" Command="{Binding SaveCommand}" Style="{StaticResource CenteredMenuItem}">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="16" VerticalAlignment="Center"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Добавить единицу" Command="{Binding AddCommand}" Style="{StaticResource CenteredMenuItem}">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="16" VerticalAlignment="Center"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Удалить единицу" Command="{Binding RemoveCommand}" Style="{StaticResource CenteredMenuItem}">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="16" VerticalAlignment="Center"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </Menu>
+
             <!-- Таблица с позициями -->
             <Border Grid.Row="2"
                 Background="White"
                 CornerRadius="6"
-                Margin="12,0"
+                Margin="12,0,12,0"
                 BorderBrush="{StaticResource BorderBrush}"
                 BorderThickness="0" Cursor="">
 
                 <DockPanel>
                     <!-- Верхняя панель с кнопками -->
-                    <Grid DockPanel.Dock="Top" Margin="10,4,10,5">
+                    <Grid DockPanel.Dock="Top" Margin="10,4,10,5" Cursor="">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
@@ -49,7 +69,7 @@
                         </Grid.ColumnDefinitions>
 
                         <!-- Левая группа кнопок -->
-                        <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Cursor="">
+                        <!--<StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Cursor="">
 
                             <Button Content="Сохранить" 
                                 Style="{StaticResource SuccessButton}"
@@ -68,7 +88,7 @@
                                 Cursor="Hand"
                             />
                             </StackPanel>
-                        </StackPanel>
+                        </StackPanel>-->
                     </Grid>
 
                     <!-- Таблица -->
@@ -85,7 +105,7 @@
                       >
 
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Полное наименование" Width="*" Binding="{Binding FullName, Mode=TwoWay}"/>
+                            <!--<DataGridTextColumn Header="Полное наименование" Width="*" Binding="{Binding FullName, Mode=TwoWay}"/>-->
                             <DataGridTextColumn Header="Краткое наименование" Width="*" Binding="{Binding ShortName, Mode=TwoWay}"/>
                         </DataGrid.Columns>
                     </DataGrid>

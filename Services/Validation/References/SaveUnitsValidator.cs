@@ -9,7 +9,7 @@ namespace DocumentHelper.Services.Validation
         {
             RuleForEach(doc => doc).ChildRules(pos =>
             {
-                pos.RuleFor(x => x.FullName).NotEmpty().WithMessage("Полное название единицы измерения не заполнено!");
+                //pos.RuleFor(x => x.FullName).NotEmpty().WithMessage("Полное название единицы измерения не заполнено!");
                 pos.RuleFor(x => x.ShortName).NotEmpty().WithMessage("Краткое название единицы измерения не заполнено!");
             });
         }

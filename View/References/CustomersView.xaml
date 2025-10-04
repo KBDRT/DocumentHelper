@@ -30,11 +30,31 @@
 
             </local:TitleBar>
 
+            <Menu VerticalAlignment="Top" Grid.Row="1" Cursor="">
+                <MenuItem Header="Сохранить" Margin="10,0,0,0" Command="{Binding SaveCommand}" Style="{StaticResource CenteredMenuItem}">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="16" VerticalAlignment="Center"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Добавить заказчика" Command="{Binding AddCommand}" Style="{StaticResource CenteredMenuItem}">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="16" VerticalAlignment="Center"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Удалить заказчика" Command="{Binding RemoveCommand}" Style="{StaticResource CenteredMenuItem}">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="16" VerticalAlignment="Center"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </Menu>
+
             <!-- Таблица с позициями -->
         <Border Grid.Row="2"
                 Background="White"
                 CornerRadius="6"
-                Margin="12,0"
+                Margin="12,0,12,0"
                 BorderBrush="{StaticResource BorderBrush}"
                 BorderThickness="0" Cursor="">
 
@@ -48,7 +68,7 @@
                     </Grid.ColumnDefinitions>
 
                     <!-- Левая группа кнопок -->
-                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Cursor="">
+                    <!--<StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Cursor="">
 
                             <Button Content="Сохранить" 
                                 Style="{StaticResource SuccessButton}"
@@ -67,7 +87,7 @@
                                     Cursor="Hand"
                                 />
                             </StackPanel>
-                    </StackPanel>
+                    </StackPanel>-->
                 </Grid>
 
                 <!-- Таблица -->
@@ -80,7 +100,7 @@
                   AlternatingRowBackground="White"
                   HorizontalGridLinesBrush="Transparent"
                   ColumnHeaderHeight="32"
-                  Margin="0,0,0,12"
+                  Margin="0,0,0,12" Cursor=""
                   >
 
                     <DataGrid.Columns>
@@ -93,17 +113,18 @@
                         </DataGridTextColumn>-->
 
                         <DataGridTextColumn Header="Полное наименование" Width="1.5*" Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        
-                        <DataGridTemplateColumn Header="Адреса" Width="150">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="Открыть объекты" 
-                                    TextDecorations="Underline"
-                                    Cursor="Hand"
-                                    MouseLeftButtonDown="OpenDetails_MouseLeftButtonDown"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+
+                            <DataGridTemplateColumn Header="Адреса" Width="150">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="Открыть объекты" 
+                                        TextDecorations="Underline"
+                                        Cursor="Hand"
+                                        MouseLeftButtonDown="OpenDetails_MouseLeftButtonDown"
+                                        HorizontalAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
 
                             <DataGridTemplateColumn Header="Договора" Width="150">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -111,7 +132,8 @@
                                         <TextBlock Text="Открыть договора" 
                                         TextDecorations="Underline"
                                         Cursor="Hand"
-                                        MouseLeftButtonDown="OpenDetails_MouseLeftButtonDown_1"/>     
+                                        MouseLeftButtonDown="OpenDetails_MouseLeftButtonDown_1"
+                                        HorizontalAlignment="Center"/>     
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

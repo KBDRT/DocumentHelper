@@ -16,7 +16,7 @@ namespace DocumentHelper.Model.Reference
         public Customer? Customer { get; set; }
 
         [NotMapped]
-        public string Info => $"{Number}, {Date.ToString("d")}, {Type}";
+        public string Info => $"{Number}, {Date.ToString("d")}";
 
     }
 }

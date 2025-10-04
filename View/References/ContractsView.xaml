@@ -30,17 +30,43 @@
 
             </local:TitleBar>
 
+            <Menu VerticalAlignment="Top" Grid.Row="1">
+                <MenuItem Header="Выбрать договор" Command="{Binding SelectCommand}" Style="{StaticResource CenteredMenuItem}" Visibility="{Binding IsVisibleSelectButton}" Margin="10,0,0,0">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE8FB;" FontFamily="Segoe MDL2 Assets" FontSize="16" VerticalAlignment="Center"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Сохранить" Command="{Binding SaveCommand}" Style="{StaticResource CenteredMenuItem}">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="16" VerticalAlignment="Center"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Добавить договор" Command="{Binding AddCommand}" Style="{StaticResource CenteredMenuItem}">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="16" VerticalAlignment="Center"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Удалить договор" Command="{Binding RemoveCommand}" Style="{StaticResource CenteredMenuItem}">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="16" VerticalAlignment="Center"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </Menu>
+
             <!-- Таблица с позициями -->
             <Border Grid.Row="2"
                 Background="White"
                 CornerRadius="6"
-                Margin="12,0"
+                Margin="12,12,12,0"
                 BorderBrush="{StaticResource BorderBrush}"
                 BorderThickness="0" Cursor="">
 
                 <DockPanel Cursor="">
                     <!-- Верхняя панель с кнопками -->
-                    <Grid DockPanel.Dock="Top" Margin="10,4,10,5">
+                    <Grid DockPanel.Dock="Top" Margin="0">
 
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -53,7 +79,7 @@
                             <TextBox Grid.Column="1" Grid.Row="0" Height="28" VerticalContentAlignment="Center" Text="{Binding Customer.FullInfo, Mode=OneWay}" IsReadOnly="True"/>
                         </StackPanel>
 
-                        <!-- Левая группа кнопок -->
+                        <!-- Левая группа кнопок --><!--
                         <StackPanel  Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center" Cursor="">
 
                             <Button Content="Выбрать договор" 
@@ -79,7 +105,7 @@
                                 Cursor="Hand"
                             />
                             </StackPanel>
-                        </StackPanel>
+                        </StackPanel>-->
                     </Grid>
 
                     <!-- Таблица -->
@@ -106,7 +132,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="Вид операции" Width="*" Binding="{Binding Type, Mode=TwoWay}"/>
+                            <!--<DataGridTextColumn Header="Вид операции" Width="*" Binding="{Binding Type, Mode=TwoWay}"/>-->
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>

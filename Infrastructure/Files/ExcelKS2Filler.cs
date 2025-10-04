@@ -28,6 +28,8 @@ namespace DocumentHelper.Infrastructure.Files
         {
 
             _FirstSheet.Cell(7, "C").Value = _Info.Customer?.Name;
+            _FirstSheet.Cell(11, "C").Value = _Info.Building;
+
             _FirstSheet.Cell(21, "M").Value = _Info.Number;
             _FirstSheet.Cell(21, "N").Value = _Info.Date.ToString("dd.MM.yyyy");
             _FirstSheet.Cell(21, "O").Value = _Info.DatePeriod.DateStart.ToString("dd.MM.yyyy");
@@ -54,6 +56,7 @@ namespace DocumentHelper.Infrastructure.Files
             foreach (var section in sections)
             {
                 var positionsForSection = _Info.Positions.Where(x => x.SectionId == section.Id);
+                section.TotalSum = 0;
                 if (positionsForSection != null)
                 {
                     int positionsSectionCount = positionsForSection.Count();
@@ -71,20 +74,20 @@ namespace DocumentHelper.Infrastructure.Files
                         RangeToCopy.CopyTo(newRange);
 
                         _FirstSheet.Cell(rowCounter, "A").Value = positionCounter;
-                        _FirstSheet.Cell(rowCounter, "C").Value = position.Item.Name;
-                        _FirstSheet.Cell(rowCounter, "F").Value = position.Item.Unit.ShortName;
-                        _FirstSheet.Cell(rowCounter, "H").Value = position.Amount;
-                        _FirstSheet.Cell(rowCounter, "I").Value = position.Price;
+                        _FirstSheet.Cell(rowCounter, "C").Value = position?.Item?.Name;
+                        _FirstSheet.Cell(rowCounter, "F").Value = position?.Unit?.ShortName;
+                        _FirstSheet.Cell(rowCounter, "H").Value = position?.Amount;
+                        _FirstSheet.Cell(rowCounter, "I").Value = position?.Price;
 
                         // vilka
                         if (section.Number == 1)
                         {
-                            _FirstSheet.Cell(rowCounter, "K").Value = position.TotalSum;
+                            _FirstSheet.Cell(rowCounter, "K").Value = position?.TotalSum;
                             firstSectionSum += position.TotalSum;
                         }
                         else
                         {
-                            _FirstSheet.Cell(rowCounter, "J").Value = position.TotalSum;
+                            _FirstSheet.Cell(rowCounter, "J").Value = position?.TotalSum;
                             otherSectionsSum += position.TotalSum;
                         }
                         section.TotalSum += position.TotalSum;
@@ -104,7 +107,7 @@ namespace DocumentHelper.Infrastructure.Files
                 _FirstSheet.Cell(rowCounter + section.TemplateTotalRow, "J").Value = section.TotalSum;
             }
 
-            rowCounter += 4;
+            rowCounter += 3;
             _FirstSheet.Cell(rowCounter, "J").Value = _Info.Costs;
 
             rowCounter++;
@@ -143,6 +146,7 @@ namespace DocumentHelper.Infrastructure.Files
 
                 if (result == MessageBoxResult.Yes)
                 {
+                    newFilePath = newFilePath.Replace("/", "\\");
                     OpenFile(newFilePath);
                 }
             }

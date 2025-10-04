@@ -13,7 +13,7 @@ namespace DocumentHelper.Services.Validation.References
             {
                 pos.RuleFor(x => x.Name).NotEmpty().WithMessage("Название услуги или материала не заполнено!");
                 //pos.RuleFor(x => x.Unit).NotNull().WithMessage("Не выбрана единица измерения!");
-                pos.RuleFor(x => x.Unit).NotNull().WithMessage("Не выбрана единица измерения!");
+                //pos.RuleFor(x => x.Unit).NotNull().WithMessage("Не выбрана единица измерения!");
             });
         }
     }

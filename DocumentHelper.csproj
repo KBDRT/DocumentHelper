@@ -6,7 +6,13 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>icons8-document-500.ico</ApplicationIcon>
+	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="icons8-document-500.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Include="Services\References\ReferencesManager.cs" />

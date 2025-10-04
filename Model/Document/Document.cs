@@ -32,5 +32,7 @@ namespace DocumentHelper.Model.Document
         public int ContractId { get; set; }
 
         public Contract? Contract { get; set; }
+
+        public string Building { get; set; } = string.Empty;
     }
 }

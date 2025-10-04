@@ -32,17 +32,48 @@
             </local:TitleBar>
 
             <Menu VerticalAlignment="Top" Grid.Row="1">
-                <MenuItem Header=" Справочники">
+                <MenuItem Header=" Справочники" Margin="10,0,0,0" Style="{StaticResource CenteredMenuItem}">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE700;" FontFamily="Segoe MDL2 Assets" FontSize="16" VerticalAlignment="Center"/>
+                    </MenuItem.Icon>
                     <MenuItem Header="Заказчики" Click="Button_Click_1"></MenuItem>
                     <MenuItem Header="Единицы измерения" Click="Button_Click_2"></MenuItem>
                     <MenuItem Header="Услуги и материалы" Click="Button_Click_3"></MenuItem>
                 </MenuItem>
                 <Separator />
-                <MenuItem Header="Документ новый" Click="Button_Click"></MenuItem>
+                <MenuItem Header="Документ новый"  Click="Button_Click" Style="{StaticResource CenteredMenuItem}">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="16" VerticalAlignment="Center"/>
+                    </MenuItem.Icon>
+                </MenuItem>
                 <Separator />
-                <MenuItem Header="Удалить документ" Command="{Binding RemoveCommand}"></MenuItem>
+                <MenuItem Header="Удалить документ" Command="{Binding RemoveCommand}" Style="{StaticResource CenteredMenuItem}">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="16" VerticalAlignment="Center"/>
+                    </MenuItem.Icon>
+                </MenuItem>
             </Menu>
 
+
+            <!--<Menu VerticalAlignment="Top" Grid.Row="1" Cursor="">
+                <MenuItem Header="Сохранить" Margin="10,0,0,0" Command="{Binding SaveCommand}" Style="{StaticResource CenteredMenuItem}">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="16" VerticalAlignment="Center"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Добавить заказчика" Command="{Binding AddCommand}" Style="{StaticResource CenteredMenuItem}">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="16" VerticalAlignment="Center"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Удалить заказчика" Command="{Binding RemoveCommand}" Style="{StaticResource CenteredMenuItem}">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="16" VerticalAlignment="Center"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </Menu>-->
 
             <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="12,6,12,0">
                 <GroupBox Header="Фильтрация">
@@ -110,10 +141,11 @@
         >
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Номер" Width="*" Binding="{Binding Number, Mode=OneWay}"/>
+                    <DataGridTextColumn Header="Номер" Width="120" Binding="{Binding Number, Mode=OneWay}"/>
                     <DataGridTextColumn Header="Заказчик" Width="*" Binding="{Binding CustomerName, Mode=OneWay}"/>
-                    <DataGridTextColumn Header="Дата" Width="*" Binding="{Binding Date, Mode=OneWay, StringFormat=d}"/>
-                    <DataGridTextColumn Header="Итоговая сумма" Width="*" Binding="{Binding TotalSum, Mode=OneWay, StringFormat=C}"/>
+                    <DataGridTextColumn Header="Объект" Width="*" Binding="{Binding AddressFull, Mode=OneWay}" />
+                    <DataGridTextColumn Header="Дата" Width="90" Binding="{Binding Date, Mode=OneWay, StringFormat=d}"/>
+                    <DataGridTextColumn Header="Итоговая сумма" Width="*" Binding="{Binding TotalSum, Mode=OneWay, StringFormat=C}" ElementStyle="{StaticResource RightAlignedCellStyle}"/>
                 </DataGrid.Columns>
             </DataGrid>
 

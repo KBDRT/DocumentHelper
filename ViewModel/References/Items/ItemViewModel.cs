@@ -11,8 +11,6 @@ namespace DocumentHelper.ModelView
 
         public string Name { get => _item.Name; set => SetValueProperty(value, v => _item.Name = v); }
 
-        public Unit? Unit { get => _item.Unit; set => SetValueProperty(value, v => _item.Unit = v); }
-
         public Section? Section { get => _item.Section; set => SetValueProperty(value, v => _item.Section = v); }
 
         public Item GetItem()

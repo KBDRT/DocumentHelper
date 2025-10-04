@@ -157,6 +157,19 @@ namespace DocumentHelper.ModelView
             }
         }
 
+        public string Building
+        {
+            get => _document.Building;
+            set
+            {
+                if (_document.Building != value)
+                {
+                    _document.Building = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs(nameof(Building)));
+                }
+            }
+        }
+
         public DocumentViewModel(Document? document = null)
         {
             var sections = ReferencesManager.GetReferenceByName("Section") as List<Section>;

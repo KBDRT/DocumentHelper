@@ -48,9 +48,12 @@ namespace DocumentHelper.ViewModel.References.Documents
                 {
                     Id = doc.Id,
                     Customer = doc.Customer,
+                    Address = doc.Address,
                     Date = doc.Date,
                     DatePeriod = doc.DatePeriod,
-                    Number = doc.Number
+                    Number = doc.Number,
+                    TotalSum = doc.TotalSum,
+                    Building = doc.Building,
                 };
             }
 

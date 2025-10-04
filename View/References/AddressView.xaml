@@ -2,23 +2,23 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:DocumentHelper"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:local="clr-namespace:DocumentHelper"
         mc:Ignorable="d"
         Title="Адреса" 
         Height="650" 
         Width="700"
         Language="ru-RU" 
         WindowStyle="None"
-        WindowStartupLocation="CenterScreen"
-        >
+        WindowStartupLocation="CenterScreen">
 
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="0" CornerRadius="0" CaptionHeight="0"></WindowChrome>
     </WindowChrome.WindowChrome>
 
     <Border BorderBrush="{StaticResource TextBrush}" 
-        BorderThickness="1"
-        Background="White">
+            BorderThickness="1"
+            Background="White">
         <Grid>
 
             <Grid.RowDefinitions>
@@ -27,79 +27,139 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <local:TitleBar Title="Адреса">
-
-            </local:TitleBar>
+            <local:TitleBar Title="Адреса"/>
+            
+            <Menu VerticalAlignment="Top" Grid.Row="1">
+                <MenuItem Header="Выбрать адрес" Command="{Binding SelectCommand}" Style="{StaticResource CenteredMenuItem}" Visibility="{Binding IsVisibleSelectButton}" Margin="10,0,0,0">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE8FB;" FontFamily="Segoe MDL2 Assets" FontSize="16" VerticalAlignment="Center" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Сохранить" Command="{Binding SaveCommand}" Style="{StaticResource CenteredMenuItem}">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="16" VerticalAlignment="Center"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Добавить адрес" Command="{Binding AddCommand}" Style="{StaticResource CenteredMenuItem}">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="16" VerticalAlignment="Center"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Удалить адрес" Command="{Binding RemoveCommand}" Style="{StaticResource CenteredMenuItem}">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="16" VerticalAlignment="Center"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </Menu>
 
             <!-- Таблица с позициями -->
             <Border Grid.Row="2"
-                Background="White"
-                CornerRadius="6"
-                Margin="12,0"
-                BorderBrush="{StaticResource BorderBrush}"
-                BorderThickness="0" Cursor="">
+                    Background="White"
+                    CornerRadius="6"
+                    Margin="12,12,12,0"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="0" Cursor="">
 
                 <DockPanel Cursor="">
                     <!-- Верхняя панель с кнопками -->
-                    <Grid DockPanel.Dock="Top" Margin="10,4,10,5">
-
+                    <Grid DockPanel.Dock="Top" Margin="0" Cursor="">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="12"/>
-                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <StackPanel Grid.Row="0" Orientation="Horizontal">
-                            <Label Grid.Column="0" Grid.Row="0" Content="Адреса для заказчика:" Style="{StaticResource SmallLabelStyle}"/>
-                            <TextBox Grid.Column="1" Grid.Row="0" Height="28" VerticalContentAlignment="Center" Text="{Binding Customer.FullInfo, Mode=OneWay}" IsReadOnly="True"/>
+                        <!-- Информация о заказчике -->
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
+                            <Label Content="Адреса для заказчика:" Style="{StaticResource SmallLabelStyle}"/>
+                            <TextBox Height="28" VerticalContentAlignment="Center" 
+                                     Text="{Binding Customer.FullInfo, Mode=OneWay}" 
+                                     IsReadOnly="True"
+                                     Margin="5,0,0,0"
+                                     MinWidth="200"/>
                         </StackPanel>
+
                         
-                        <!-- Левая группа кнопок -->
-                        <StackPanel  Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center" Cursor="">
+                        
+                        <!-- Группы кнопок с разделителями -->
+                        <!--<StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center">
+                            --><!-- Группа основных действий --><!--
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="Сохранить" 
+                                        Style="{StaticResource SuccessButton}"
+                                        Command="{Binding SaveCommand}" 
+                                        Cursor="Hand"
+                                        ToolTip="Сохранить все изменения"/>
+                            </StackPanel>
 
-                            <Button Content="Выбрать адрес" 
-                                Style="{StaticResource SuccessButton}"
-                                Command="{Binding SelectCommand}" Cursor="Hand"
-                                Visibility="{Binding IsVisibleSelectButton}"
-                            />
+                            <Separator Style="{StaticResource VerticalSeparator}" Margin="15,0"/>
 
-                            <Button Content="Сохранить"  Margin="50,0,0,0"
-                                Style="{StaticResource SuccessButton}"
-                                Command="{Binding SaveCommand}" Cursor="Hand"
-                            />
-
+                            --><!-- Группа работы с адресами --><!--
                             <StackPanel Orientation="Horizontal">
                                 <Button Content="Добавить адрес" 
-                                Style="{StaticResource SmallButton}"
-                                Command="{Binding AddCommand}"
-                            />
+                                        Style="{StaticResource SmallButton}"
+                                        Command="{Binding AddCommand}"
+                                        ToolTip="Добавить новый адрес"/>
 
                                 <Button Content="Удалить адрес" 
-                                Style="{StaticResource DangerButton}"
-                                Command="{Binding RemoveCommand}"
-                                Cursor="Hand"
-                            />
+                                        Style="{StaticResource DangerButton}"
+                                        Command="{Binding RemoveCommand}"
+                                        Cursor="Hand"
+                                        Margin="5,0,0,0"
+                                        ToolTip="Удалить выбранный адрес"/>
                             </StackPanel>
-                        </StackPanel>
+
+                            <Separator Style="{StaticResource VerticalSeparator}" Margin="15,0"/>
+
+                            --><!-- Группа выбора --><!--
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="Выбрать адрес" 
+                                        Style="{StaticResource SuccessButton}"
+                                        Command="{Binding SelectCommand}" 
+                                        Cursor="Hand"
+                                        Visibility="{Binding IsVisibleSelectButton}"
+                                        ToolTip="Выбрать адрес и закрыть окно"/>
+                            </StackPanel>
+                        </StackPanel>-->
                     </Grid>
 
                     <!-- Таблица -->
                     <DataGrid ItemsSource="{Binding AddressesView}"
-                      AutoGenerateColumns="False"
-                      Style="{StaticResource ModernDataGrid2}"
-                      ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle2}"
-                      CellStyle="{StaticResource DataGridCellStyle2}"
-                      SelectedItem="{Binding SelectedItem}"
-                      AlternatingRowBackground="White"
-                      HorizontalGridLinesBrush="Transparent"
-                      ColumnHeaderHeight="32"
-                      Margin="0,0,0,12"
-                      >
+                              AutoGenerateColumns="False"
+                              Style="{StaticResource ModernDataGrid2}"
+                              ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle2}"
+                              CellStyle="{StaticResource DataGridCellStyle2}"
+                              SelectedItem="{Binding SelectedItem}"
+                              AlternatingRowBackground="White"
+                              HorizontalGridLinesBrush="Transparent"
+                              ColumnHeaderHeight="32"
+                              Margin="0,0,0,12">
 
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Полный адрес для записи в поле объект" Width="*" Binding="{Binding FullAddress, Mode=TwoWay}"/>
-                            <!--<DataGridTextColumn Header="Краткое наименование" Width="*" Binding="{Binding ShortName, Mode=TwoWay}"/>-->
+                            <DataGridTextColumn Header="Полный адрес для записи в поле объект" 
+                                               Width="*" 
+                                               Binding="{Binding FullAddress, Mode=TwoWay}"/>
                         </DataGrid.Columns>
+
+                        <!-- Контекстное меню для дополнительного удобства -->
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Добавить адрес" 
+                                          Command="{Binding AddCommand}"
+                                          ToolTip="Добавить новый адрес"/>
+                                <MenuItem Header="Удалить адрес" 
+                                          Command="{Binding RemoveCommand}"
+                                          ToolTip="Удалить выбранный адрес"/>
+                                <Separator/>
+                                <MenuItem Header="Выбрать адрес" 
+                                          Command="{Binding SelectCommand}"
+                                          Visibility="{Binding IsVisibleSelectButton}"
+                                          ToolTip="Выбрать этот адрес"/>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
                     </DataGrid>
                 </DockPanel>
             </Border>

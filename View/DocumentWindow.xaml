@@ -26,12 +26,28 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <local:TitleBar x:Name="TitleBar" Title="Документ" Grid.Row="0">
 
             </local:TitleBar>
+
+            <Menu VerticalAlignment="Top" Grid.Row="1">
+                <MenuItem Header="Сохранить" Margin="10,0,0,0" Command="{Binding SaveCommand}" Style="{StaticResource CenteredMenuItem}">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="16" VerticalAlignment="Center"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Создать файл" Command="{Binding CreateFileCommand}" Style="{StaticResource CenteredMenuItem}">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#xE8E5;" FontFamily="Segoe MDL2 Assets" FontSize="16" VerticalAlignment="Center"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </Menu>
+
 
             <Popup x:Name="PopupSuggest" StaysOpen="False" Placement="Bottom" PopupAnimation="Slide">
                 <Border Background="White" BorderBrush="Gray" BorderThickness="1">
@@ -40,7 +56,7 @@
             </Popup>
 
             <!-- Верхний блок - информация о документе -->
-            <Border Grid.Row="1"
+            <Border Grid.Row="2"
                     Background="White"
                     CornerRadius="6"
                     Padding="6"
@@ -56,32 +72,23 @@
                         <RowDefinition Height="10"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    
+
                     <Grid.ColumnDefinitions>
-                        <!--<ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="60"/>-->
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="60"/>
-                        <ColumnDefinition Width="100"/>
-                        <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="100"/>
-                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="0.5*"/>
                         <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="200"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <!--<Label Grid.Column="0" Content="Сист. номер:" Style="{StaticResource SmallLabelStyle}"/>
-                    <TextBlock Grid.Column="1" Text="0" VerticalAlignment="Center" Style="{StaticResource SummaryValueStyle}"/>-->
-
                     <Label Grid.Column="0" Grid.Row="0" Content="Номер:" Style="{StaticResource SmallLabelStyle}"/>
-                    <TextBox Grid.Column="1" Grid.Row="0" Height="28" VerticalContentAlignment="Center" Text="{Binding Number, Mode=TwoWay}"/>
+                    <TextBox Grid.Column="1" Grid.Row="0" Height="28" VerticalContentAlignment="Center" Text="{Binding Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    <Label Grid.Column="4" Grid.Row="0" Content="Дата:" Style="{StaticResource SmallLabelStyle}"/>
-                    <DatePicker Grid.Column="5" Grid.Row="0" Style="{StaticResource VerySmallDatePicker}" SelectedDate="{Binding Date, Mode=TwoWay}"/>
+                    <Label Grid.Column="0" Grid.Row="2" Content="Дата:" Style="{StaticResource SmallLabelStyle}"/>
+                    <DatePicker Grid.Column="1" Grid.Row="2" Style="{StaticResource VerySmallDatePicker}" SelectedDate="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                     <Label Grid.Column="2" Grid.Row="0" Content="Организация:" Style="{StaticResource SmallLabelStyle}"/>
 
@@ -93,13 +100,10 @@
                         Grid.Column="3" Grid.Row="0" Style="{StaticResource SmallComboBox}"/>
 
                     <Label Grid.Column="6" Grid.Row="0" Content="Начало:" Style="{StaticResource SmallLabelStyle}"/>
-                    <DatePicker Grid.Column="7" Grid.Row="0" Style="{StaticResource VerySmallDatePicker}" SelectedDate="{Binding DateStart, Mode=TwoWay}"/>
+                    <DatePicker Grid.Column="7" Grid.Row="0" Style="{StaticResource VerySmallDatePicker}" SelectedDate="{Binding DateStart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    <Label Grid.Column="8" Grid.Row="0" Content="Конец:" Style="{StaticResource SmallLabelStyle}"/>
-                    <DatePicker Grid.Column="9" Grid.Row="0" Style="{StaticResource VerySmallDatePicker}" SelectedDate="{Binding DateEnd, Mode=TwoWay}"/>
-
-                    <Button Grid.Column="10" Grid.Row="0" Content="Сохранить" Style="{StaticResource SuccessButton}" Height="28" Padding="12,4" Margin="8,0,0,0" Command="{Binding SaveCommand}"/>
-                    <Button Grid.Column="11" Grid.Row="0" Content="Создать файл" Style="{StaticResource PrimaryButton}" Height="28" Padding="12,4" Margin="8,0,0,0" Command="{Binding CreateFileCommand}" Cursor="Hand"/>
+                    <Label Grid.Column="6" Grid.Row="3" Content="Конец:" Style="{StaticResource SmallLabelStyle}"/>
+                    <DatePicker Grid.Column="7" Grid.Row="3" Style="{StaticResource VerySmallDatePicker}" SelectedDate="{Binding DateEnd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                     <Label Grid.Column="2" Grid.Row="2" Style="{StaticResource SmallLabelStyle}">
                         <Hyperlink Command="{Binding OpenWindowCommand}" 
@@ -112,7 +116,7 @@
 
                     <TextBox Grid.Column="3" Grid.Row="2" Text="{Binding Address.FullAddress, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" VerticalContentAlignment="Center" />
 
-                    <Label Grid.Column="4" Grid.Row="2" Style="{StaticResource SmallLabelStyle}">
+                    <Label Grid.Column="4" Grid.Row="0" Style="{StaticResource SmallLabelStyle}">
                         <Hyperlink Command="{Binding OpenWindowCommand}" 
                         CommandParameter="Contract"
                         TextDecorations="None"
@@ -121,12 +125,16 @@
                         </Hyperlink>
                     </Label>
 
-                    <TextBox Grid.Column="5" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding Contract.Info, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" VerticalContentAlignment="Center" />
+                    <TextBox Grid.Column="5" Grid.Row="0"  Text="{Binding Contract.Info, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" VerticalContentAlignment="Center" />
+
+                    <Label Grid.Column="4" Grid.Row="2" Content="Стройка:" Style="{StaticResource SmallLabelStyle}"/>
+                    <TextBox Grid.Column="5" Grid.Row="2" Height="28" VerticalContentAlignment="Center" Text="{Binding Building, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
                 </Grid>
             </Border>
 
             <!-- Блок с итогами по разделам -->
-            <Border Grid.Row="2"
+            <Border Grid.Row="3"
                     Background="{StaticResource SummaryBackgroundBrush}"
                     CornerRadius="6"
                     Padding="6"
@@ -260,10 +268,10 @@
             </Border>
 
             <!-- Таблица с позициями -->
-            <Border Grid.Row="3"
+            <Border Grid.Row="4"
                     Background="White"
                     CornerRadius="6"
-                    Margin="12,6"
+                    Margin="12,12,12,12"
                     BorderBrush="{StaticResource BorderBrush}"
                     BorderThickness="0">
 
