@@ -97,7 +97,6 @@ namespace DocumentHelper.Services.Database
             {
                 Id = ui.Id,
                 Name = ui.Name,
-                UnitId = ui.Unit?.Id ?? ui.UnitId,
                 SectionId = ui.Section?.Id ?? ui.SectionId,
             }).ToList();
 
@@ -114,7 +113,6 @@ namespace DocumentHelper.Services.Database
                 if (updatedItem != null)
                 {
                     existingItem.Name = updatedItem.Name;
-                    existingItem.UnitId = updatedItem.UnitId;
                 }
             }
 
@@ -122,6 +120,33 @@ namespace DocumentHelper.Services.Database
             var toDelete = existingItems.Where(ei =>
                 !itemsToUpdate.Any(ui => ui.Id == ei.Id));
             context.Items.RemoveRange(toDelete);
+
+            await context.SaveChangesAsync();
+        }
+
+        public async Task SaveUnits(List<Unit> units)
+        {
+            using var context = new AppDBContext();
+
+            // Работаем только с ID, чтобы избежать проблем с отслеживанием
+            var itemsToUpdate = units.Select(ui => new Unit
+            {
+                Id = ui.Id,
+                ShortName = ui.ShortName,
+                //SectionId = ui.Section?.Id ?? ui.SectionId,
+            }).ToList();
+
+            var existingItems = await context.Units.ToListAsync();
+
+            // Добавление новых
+            var newItems = itemsToUpdate.Where(ui => ui.Id == 0).ToList();
+            await context.Units.AddRangeAsync(newItems);
+
+
+            // Удаление
+            //var toDelete = existingItems.Where(ei =>
+            //    !itemsToUpdate.Any(ui => ui.Id == ei.Id));
+            //context.Units.RemoveRange(toDelete);
 
             await context.SaveChangesAsync();
         }

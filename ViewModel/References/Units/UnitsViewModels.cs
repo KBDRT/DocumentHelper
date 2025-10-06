@@ -1,4 +1,5 @@
 ﻿using DocumentHelper.Model;
+using DocumentHelper.Model.Document;
 using DocumentHelper.ModelView.ReferencesVM;
 using DocumentHelper.Services.DataServices;
 
@@ -45,9 +46,9 @@ namespace DocumentHelper.ViewModel.References.Units
 
         protected override bool CheckDependent()
         {
-            if (SelectedItem != null && ReferencesManager.GetReferenceByName("Item") is List<Item> items)
+            if (SelectedItem != null && ReferencesManager.GetReferenceByName("Document") is List<Document> documents)
             {
-                return !items.Any(x => x.UnitId == SelectedItem.Id);
+                return !documents.Any(x => x.Positions.Any(x => x.UnitId == SelectedItem.Id));
             }
 
             return true;

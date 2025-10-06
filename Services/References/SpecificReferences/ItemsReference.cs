@@ -8,7 +8,7 @@ namespace DocumentHelper.Services.References.SpecificReferences
     {
         public override List<Item> SelectFromDbSet(DbSet<Item> dbSet)
         {
-            return dbSet.Include(x => x.Section).Include(x => x.Unit).AsNoTracking().ToList();
+            return dbSet.Include(x => x.Section).AsNoTracking().ToList();
         }
     }
 }

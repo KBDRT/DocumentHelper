@@ -12,5 +12,6 @@ namespace DocumentHelper.View.References
             InitializeComponent();
             DataContext = new ItemsViewModel();
         }
+
     }
 }

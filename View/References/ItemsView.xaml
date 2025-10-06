@@ -110,7 +110,7 @@
 
                                         <DataGrid.Columns>
                                             <DataGridTextColumn Header="Полное наименование" Width="*" Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                            <DataGridTemplateColumn Header="Единица измерения">
+                                            <!--<DataGridTemplateColumn Header="Единица измерения">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <ComboBox 
@@ -120,7 +120,7 @@
                                                       IsEditable="False"/>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
+                                            </DataGridTemplateColumn>-->
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </DockPanel>

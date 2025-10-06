@@ -14,6 +14,8 @@ namespace DocumentHelper.Services.Database
 
         public Task SaveItems(List<Item> items);
 
+        public Task SaveUnits(List<Unit> units);
+
         public Task SaveDocument(Document document);
     }
 }

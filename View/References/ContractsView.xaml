@@ -121,6 +121,12 @@
                       Margin="0,0,0,12"
                       >
 
+                        <DataGrid.Resources>
+                            <Style TargetType="DataGridRow">
+                                <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
+                            </Style>
+                        </DataGrid.Resources>
+
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Номер договора" Width="*" Binding="{Binding Number, Mode=TwoWay}"/>
                             <DataGridTemplateColumn Header="Дата договора" Width="*">

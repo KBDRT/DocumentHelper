@@ -10,7 +10,7 @@ namespace DocumentHelper.ModelView
     public partial class PositionViewModel
     {
         [Notify]
-        private Position position = new(){ Item = new() { Unit = new()} };
+        private Position position = new() { Item = new(), Unit = new() };
 
         private ItemViewModel _item = new();
 

@@ -38,7 +38,7 @@ namespace DocumentHelper.Infrastructure.Files
 
             _FirstSheet.Cell(15, "N").Value = _Info.Contract?.Number;
             _FirstSheet.Cell(16, "N").Value = _Info.Contract?.Date.ToString("dd.MM.yyyy");
-            _FirstSheet.Cell(17, "N").Value = _Info.Contract?.Type;
+            //_FirstSheet.Cell(17, "N").Value = _Info.Contract?.Type;
 
             int startRowForSection = 31;
             var RangeToCopy = _FirstSheet.Range(startRowForSection, 1, startRowForSection, _FirstSheet.ColumnCount());
@@ -107,7 +107,7 @@ namespace DocumentHelper.Infrastructure.Files
                 _FirstSheet.Cell(rowCounter + section.TemplateTotalRow, "J").Value = section.TotalSum;
             }
 
-            rowCounter += 3;
+            rowCounter += sections.Count();
             _FirstSheet.Cell(rowCounter, "J").Value = _Info.Costs;
 
             rowCounter++;

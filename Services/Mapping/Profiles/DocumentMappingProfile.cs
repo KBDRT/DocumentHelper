@@ -19,13 +19,11 @@ namespace DocumentHelper.Services.Mapping.Profiles
                     {
                         Id = src.ItemId,
                         Name = src.Item.Name,
-                        Unit = src.Item.Unit
                     }))
                     .ForMember(dest => dest.Unit, opt => opt.MapFrom(src => new Unit
                      {
-                        Id = src.Item.UnitId,
-                        FullName = src.Item.Unit.FullName,
-                        ShortName = src.Item.Unit.ShortName
+                        Id = src.UnitId,
+                        ShortName = src.Unit.ShortName
                     }));
 
         }

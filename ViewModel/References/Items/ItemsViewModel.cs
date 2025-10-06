@@ -16,19 +16,9 @@ namespace DocumentHelper.ModelView
 
         public ObservableCollection<ItemsSectionViewModel> Sections { get; set; } = new();
 
-        public ObservableCollection<Unit> AvailableUnits { get; set; } = new();
-
         public RelayCommand SaveCommand { get; private set; } = null!;
         public ItemsViewModel()
         {
-            if (ReferencesManager.GetReferenceByName("Unit") is List<Unit> unitsReference)
-            {
-                foreach (var unit in unitsReference)
-                {
-                    AvailableUnits.Add(unit);
-                }
-            }
-
             var items = ReferencesManager.GetReferenceByName("Item") as List<Item>;
             var sections = ReferencesManager.GetReferenceByName("Section") as List<Section>;
             foreach (var section in sections)
@@ -41,7 +31,6 @@ namespace DocumentHelper.ModelView
                         Id = item.Id,
                         Name = item.Name,
                         Section = section,
-                        Unit = AvailableUnits.SingleOrDefault(x=> x.Id == item.UnitId)
                     });
                 }
 

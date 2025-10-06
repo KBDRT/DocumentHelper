@@ -10,6 +10,7 @@ namespace DocumentHelper.Services.References.SpecificReferences
         {
             return dbSet.Include(x => x.Positions)
                 .ThenInclude(x => x.Item)
+                .Include(x => x.Positions)
                 .ThenInclude(x => x.Unit)
                 .Include(x => x.Positions)
                 .ThenInclude(x => x.Section)

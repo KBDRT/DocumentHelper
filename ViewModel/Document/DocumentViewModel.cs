@@ -13,6 +13,7 @@ using FluentValidation.Results;
 using PropertyChanged.SourceGenerator;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -24,13 +25,16 @@ namespace DocumentHelper.ModelView
         private Document _document { get; set; } = null!;
 
         private readonly IRepositoryBase<Document> _repository = new RepositoryBase<Document>();
+
+        private readonly IRepositoryBase<Unit> _repositoryUnit = new RepositoryBase<Unit>();
+
         public ObservableCollection<DocumentSectionViewModel> Sections { get; set; } = new();
 
-        public ObservableCollection<Customer> AvailableCustomers { get; set; } = new();
+        public ObservableCollection<Customer> AvailableCustomers => new(ReferencesManager.GetReferenceByName("Customer") as List<Customer>);
 
-        public ObservableCollection<Item> AllItems { get; set; } = new();
+        public ObservableCollection<Item> AllItems => new(ReferencesManager.GetReferenceByName("Item") as List<Item>);
 
-        public ObservableCollection<Unit> AllUnits { get; set; } = new();
+        public ObservableCollection<Unit> AllUnits => new(ReferencesManager.GetReferenceByName("Unit") as List<Unit>);
 
         [Notify]
         private double _costsReal;
@@ -216,33 +220,7 @@ namespace DocumentHelper.ModelView
 
             }
 
-            if (ReferencesManager.GetReferenceByName("Item") is List<Item> items)
-            {
-                foreach (var item in items)
-                {
-                    //for (int i = 0; i < 100; i++)
-                    //{
-                    AllItems.Add(item);
-                    //}
-                }
-            }
-
-
-            if (ReferencesManager.GetReferenceByName("Unit") is List<Unit> units)
-            {
-                foreach (var unit in units)
-                {
-                    AllUnits.Add(unit);
-                }
-            }
-
-            if (ReferencesManager.GetReferenceByName("Customer") is List<Customer> customerReference)
-            {
-                foreach (var unit in customerReference)
-                {
-                    AvailableCustomers.Add(unit);
-                }
-            }
+            //FillRef();
 
             SaveCommand = new(SaveCommandHandler);
             CreateFileCommand = new(CreateFileCommandHandler);
@@ -260,6 +238,39 @@ namespace DocumentHelper.ModelView
             CostsReal = Sections.Sum(x => x.SectionTotalSum) * 0.05;
             TotalSum = Sections.Sum(x => x.SectionTotalSum) + Costs;
         }
+
+        //private void FillRef()
+        //{
+        //    AllItems.Clear();
+        //    if (ReferencesManager.GetReferenceByName("Item") is List<Item> items)
+        //    {
+        //        foreach (var item in items)
+        //        {
+        //            AllItems.Add(item);
+        //        }
+        //    }
+
+        //    AllUnits.Clear();
+        //    if (ReferencesManager.GetReferenceByName("Unit") is List<Unit> units)
+        //    {
+        //        foreach (var unit in units)
+        //        {
+        //            AllUnits.Add(unit);
+        //        }
+        //    }
+
+        //    AvailableCustomers.Clear();
+        //    if (ReferencesManager.GetReferenceByName("Customer") is List<Customer> customerReference)
+        //    {
+        //        foreach (var unit in customerReference)
+        //        {
+        //            AvailableCustomers.Add(unit);
+        //        }
+        //    }
+        //}
+
+
+
 
         public RelayCommand SaveCommand { get; private set; }
 
@@ -281,7 +292,22 @@ namespace DocumentHelper.ModelView
             {
                 _document.ContractId = _document.Contract.Id;
             }
-            
+
+            var allUnits = Sections.SelectMany(s => s.Positions).Select(p => p.Unit).GroupBy(x => x.ShortName).Select(g => g.First()).ToList();
+
+
+            foreach (var unit in allUnits)
+            {
+                var unitFromRef = AllUnits.FirstOrDefault(x => x.ShortName == unit.ShortName);
+                if (unitFromRef == null)
+                {
+                    unit.Id = 0;
+                }
+            }
+
+            await _repositoryUnit.SaveUnits(allUnits);
+            ReferencesManager.SelectReferenceByName("Unit");
+
             foreach (var section in Sections)
             {
                 foreach(var position in section.Positions)
@@ -300,12 +326,31 @@ namespace DocumentHelper.ModelView
                         item = new()
                         {
                             SectionId = section.Id,
-                            UnitId = position.Unit.Id,
+                            //UnitId = position.Unit.Id,
                             Name = item.Name,
                             Id = 0
                         };
                         itemId = 0;
                     }
+
+                    var unit = position.Unit;
+                    var unitId = unit.Id;
+                    var unitFromRef = AllUnits.FirstOrDefault(x => x.ShortName == unit.ShortName);
+                    if (unitFromRef != null)
+                    {
+                        unitId = unitFromRef.Id;
+                        unit = null;
+                    }
+                    else
+                    {
+                        unit = new()
+                        {
+                            ShortName = unit.ShortName,
+                            Id = 0
+                        };
+                        unitId = 0;
+                    }
+
 
                     _document.Positions.Add(new()
                     {
@@ -317,6 +362,8 @@ namespace DocumentHelper.ModelView
                         ItemId = itemId,
                         Item = item,
                         DocumentId = Document.Id,
+                        Unit = unit,
+                        UnitId = unitId
                     });
                 }
             }
@@ -334,6 +381,7 @@ namespace DocumentHelper.ModelView
 
             ReferencesManager.SelectReferenceByName("Document");
             ReferencesManager.SelectReferenceByName("Item");
+            //ReferencesManager.SelectReferenceByName("Unit");
 
             _document = (ReferencesManager.GetReferenceByName("Document") as List<Document>).SingleOrDefault(x => x.Id == _document.Id);
         }
