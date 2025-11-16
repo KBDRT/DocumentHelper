@@ -130,11 +130,14 @@ namespace DocumentHelper.Infrastructure.Files
 
                 string newFilePath = _NewFileName;
 
+
                 if (File.Exists(newFilePath))
                 {
                     string timestamp = DateTime.Now.ToString("ddMMyyyy_HHmmss");
                     newFilePath = Path.Combine(directory, $"{fileNameWithoutExtension} ({timestamp}){extension}");
                 }
+
+                newFilePath = newFilePath.Replace("\"", "'");
 
                 _Wbook.SaveAs(newFilePath);
 
